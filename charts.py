@@ -1,0 +1,246 @@
+"""Plotly figures styled after the dss+ result decks."""
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+from core import (BUSINESS_ORDER, CRIT_ORDER, GRID, INK_2, MUTED, NAVY, STATUS_COLORS, STATUS_ORDER, flag_uri)
+
+FONT = "Montserrat, 'Segoe UI', Helvetica, Arial, sans-serif"
+CONFIG = {"displaylogo": False, "modeBarButtonsToRemove": ["lasso2d", "select2d", "autoScale2d"],
+          "toImageButtonOptions": {"format": "png", "scale": 2}}
+
+
+def _base(fig, height, legend=True, margin=None):
+    fig.update_layout(
+        height=height, margin=margin or dict(l=10, r=10, t=30, b=10),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(family=FONT, color=NAVY, size=12),
+        barmode="stack", bargap=0.28, showlegend=legend,
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0, font=dict(size=12), title_text="",
+                    traceorder="normal"),
+        hoverlabel=dict(bgcolor="white", bordercolor=GRID, font=dict(family=FONT, color=NAVY, size=12)),
+    )
+    fig.update_yaxes(showgrid=True, gridcolor=GRID, zeroline=False, tickfont=dict(color=MUTED, size=11))
+    fig.update_xaxes(showgrid=False, linecolor="#C9CCD6", tickfont=dict(color=INK_2, size=12))
+    return fig
+
+
+def _bar(name, x, y, **kw):
+    return go.Bar(
+        name=name, x=x, y=y, marker=dict(color=STATUS_COLORS[name], line=dict(color="white", width=1.5)),
+        text=[v if v else "" for v in y], textposition="inside", insidetextanchor="middle",
+        textfont=dict(color="white", size=12), textangle=0, cliponaxis=False, **kw)
+
+
+def criticality_stack(fig_data, height=360, title=None):
+    """Single site/segment: stacked compliance status per criticality level (deck site slides)."""
+    fig = go.Figure()
+    for i, s in enumerate(STATUS_ORDER):
+        y = [fig_data.get(c, [0, 0, 0])[i] for c in CRIT_ORDER]
+        fig.add_trace(_bar(s, CRIT_ORDER, y, hovertemplate="%{x} criticality<br>" + s + ": <b>%{y}</b><extra></extra>"))
+    totals = [sum(fig_data.get(c, [0, 0, 0])) for c in CRIT_ORDER]
+    for c, t in zip(CRIT_ORDER, totals):
+        fig.add_annotation(x=c, y=t, text=f"<b>{t}</b>", showarrow=False, yshift=10, font=dict(color=INK_2, size=11))
+    fig.update_layout(uniformtext=dict(minsize=9, mode="hide"))
+    _base(fig, height)
+    if title:
+        fig.update_layout(title=dict(text=title, x=0, font=dict(size=13)))
+    return fig
+
+
+def cluster_business_stack(cluster_fig, height=460):
+    """Deck 'Compliance status per criticality of business in the <cluster>': business × criticality."""
+    types = [b for b in BUSINESS_ORDER if b in cluster_fig]
+    x0, x1 = [], []
+    for b in types:
+        for c in CRIT_ORDER:
+            x0.append(b); x1.append(c)
+    fig = go.Figure()
+    for i, s in enumerate(STATUS_ORDER):
+        y = [cluster_fig[b][c][i] for b, c in zip(x0, x1)]
+        fig.add_trace(_bar(s, [x0, x1], y,
+                           customdata=list(zip(x0, x1)),
+                           hovertemplate="%{customdata[0]} · %{customdata[1]} criticality<br>" + s + ": <b>%{y}</b><extra></extra>"))
+    fig.update_layout(uniformtext=dict(minsize=9, mode="hide"), bargap=0.18)
+    _base(fig, height)
+    fig.update_xaxes(tickfont=dict(size=11))
+    return fig
+
+
+def global_high_chart(rows, height=500):
+    """Deck 'Compliance status by High Criticality per type of business in the different clusters'."""
+    pos, xs, ticks, groups = 0.0, [], [], {}
+    for b in BUSINESS_ORDER:
+        rs = [r for r in rows if r["business_type"] == b]
+        if not rs:
+            continue
+        start = pos
+        for r in rs:
+            xs.append(pos); ticks.append(r)
+            pos += 1
+        groups[b] = (start + pos - 1) / 2
+        pos += 0.9
+    fig = go.Figure()
+    for i, s in enumerate(STATUS_ORDER):
+        y = [r["values"][i] for r in ticks]
+        cd = [(r["business_type"], r["cluster"]) for r in ticks]
+        fig.add_trace(_bar(s, xs, y, width=0.78, customdata=cd,
+                           hovertemplate="%{customdata[0]} · %{customdata[1]}<br>" + s + ": <b>%{y}</b><extra></extra>"))
+    ymax = max(sum(r["values"]) for r in ticks)
+    fsz = ymax * 0.055
+    for x, r in zip(xs, ticks):
+        tot = sum(r["values"])
+        n = len(r["flags"])
+        for k, code in enumerate(r["flags"]):
+            fig.add_layout_image(dict(source=flag_uri(code), xref="x", yref="y", x=x + (k - (n - 1) / 2) * 0.36,
+                                      y=tot + ymax * 0.02, sizex=0.34, sizey=fsz, xanchor="center", yanchor="bottom",
+                                      sizing="contain", layer="above"))
+    for b, cx in groups.items():
+        fig.add_annotation(x=cx, y=0, yref="paper", yshift=-44, text=f"<b>{b}</b>", showarrow=False,
+                           font=dict(size=13, color=NAVY))
+    fig.update_layout(uniformtext=dict(minsize=9, mode="hide"))
+    _base(fig, height, margin=dict(l=10, r=10, t=40, b=60))
+    short = {"France": "FR", "Greece & Italy": "GR·IT", "Mexico & Colombia": "MX·CO", "Spain & Portugal": "ES·PT"}
+    lbl = []
+    for r in ticks:
+        lbl.append("·".join(r["flags"]) if len(r["flags"]) else short.get(r["cluster"], r["cluster"]))
+    fig.update_xaxes(tickmode="array", tickvals=xs, ticktext=lbl, tickfont=dict(size=10, color=MUTED))
+    fig.update_yaxes(range=[0, ymax * 1.14])
+    return fig
+
+
+def small_multiples(items, cols=4, height_per_row=250, shared=False):
+    """items: list of (title, {crit: [c,p,nc]}) → grid of criticality stacks."""
+    n = len(items)
+    rows = (n + cols - 1) // cols
+    fig = make_subplots(rows=rows, cols=cols, subplot_titles=[t for t, _ in items],
+                        horizontal_spacing=0.05, vertical_spacing=0.16 if rows > 1 else 0.1, shared_yaxes=shared)
+    for k, (title, data) in enumerate(items):
+        r, c = k // cols + 1, k % cols + 1
+        for i, s in enumerate(STATUS_ORDER):
+            y = [data.get(cr, [0, 0, 0])[i] for cr in CRIT_ORDER]
+            fig.add_trace(_bar(s, CRIT_ORDER, y, showlegend=(k == 0), legendgroup=s,
+                               hovertemplate=title + "<br>%{x} · " + s + ": <b>%{y}</b><extra></extra>"), row=r, col=c)
+    fig.update_layout(uniformtext=dict(minsize=8, mode="hide"))
+    _base(fig, height_per_row * rows + 40, margin=dict(l=10, r=10, t=40, b=10))
+    fig.update_layout(legend=dict(orientation="h", y=1.0 + 0.1 / rows, yanchor="bottom", x=0))
+    fig.update_annotations(font=dict(size=12, color=NAVY, family=FONT))
+    fig.update_xaxes(tickfont=dict(size=10))
+    return fig
+
+
+def business_high_multiples(cluster_figs, clusters, flags):
+    """High-criticality stacks by business type, one panel per cluster."""
+    fig = make_subplots(rows=1, cols=len(clusters), subplot_titles=clusters, horizontal_spacing=0.06)
+    for k, cl in enumerate(clusters):
+        types = [b for b in BUSINESS_ORDER if b in cluster_figs[cl]]
+        for i, s in enumerate(STATUS_ORDER):
+            y = [cluster_figs[cl][b]["High"][i] for b in types]
+            fig.add_trace(_bar(s, types, y, showlegend=(k == 0), legendgroup=s,
+                               hovertemplate=cl + " · %{x}<br>High criticality · " + s + ": <b>%{y}</b><extra></extra>"),
+                          row=1, col=k + 1)
+    fig.update_layout(uniformtext=dict(minsize=8, mode="hide"))
+    _base(fig, 350, margin=dict(l=10, r=10, t=60, b=10))
+    fig.update_layout(legend=dict(y=1.12))
+    fig.update_annotations(font=dict(size=12, color=NAVY, family=FONT))
+    return fig
+
+
+def share_bars(labels, data, height=None, title=None):
+    """100% horizontal stacked bars. data: list of [c,p,nc]."""
+    fig = go.Figure()
+    tots = [max(1, sum(d)) for d in data]
+    for i, s in enumerate(STATUS_ORDER):
+        pct = [d[i] / t * 100 for d, t in zip(data, tots)]
+        fig.add_trace(go.Bar(
+            name=s, y=labels, x=pct, orientation="h",
+            marker=dict(color=STATUS_COLORS[s], line=dict(color="white", width=1.5)),
+            text=[f"{p:.0f}%" if p >= 7 else "" for p in pct], textposition="inside",
+            textfont=dict(color="white", size=11), textangle=0, customdata=[d[i] for d in data],
+            hovertemplate="%{y}<br>" + s + ": <b>%{x:.0f}%</b> (%{customdata})<extra></extra>"))
+    _base(fig, height or 60 + 34 * len(labels))
+    fig.update_xaxes(range=[0, 100], ticksuffix="%", showgrid=True, gridcolor=GRID)
+    fig.update_yaxes(autorange="reversed", showgrid=False, tickfont=dict(color=NAVY, size=12))
+    if title:
+        fig.update_layout(title=dict(text=title, x=0, font=dict(size=13)))
+    return fig
+
+
+def activity_bars(df_counts, height=None):
+    """Horizontal stacked counts by key activity (checklist)."""
+    fig = go.Figure()
+    for s in STATUS_ORDER:
+        fig.add_trace(go.Bar(
+            name=s, y=df_counts.index, x=df_counts[s], orientation="h",
+            marker=dict(color=STATUS_COLORS[s], line=dict(color="white", width=1.5)),
+            text=[v if v else "" for v in df_counts[s]], textposition="inside", textfont=dict(color="white", size=11),
+            textangle=0, insidetextanchor="middle",
+            hovertemplate="%{y}<br>" + s + ": <b>%{x}</b><extra></extra>"))
+    _base(fig, height or max(260, 60 + 26 * len(df_counts)), margin=dict(l=10, r=10, t=10, b=10))
+    fig.update_yaxes(autorange="reversed", showgrid=False, tickfont=dict(color=NAVY, size=11))
+    fig.update_xaxes(showgrid=True, gridcolor=GRID, title_text="Requirements", title_font=dict(size=11, color=MUTED))
+    fig.update_layout(legend=dict(orientation="h", y=1.0, yanchor="bottom", x=0))
+    return fig
+
+
+def status_donut(counts, height=300):
+    labels = [k for k in ["Compliant", "Partially compliant", "Non-compliant", "Not applicable", "Not assessed"] if counts.get(k)]
+    vals = [counts[k] for k in labels]
+    fig = go.Figure(go.Pie(labels=labels, values=vals, hole=0.62, sort=False, direction="clockwise",
+                           marker=dict(colors=[STATUS_COLORS[k] for k in labels], line=dict(color="white", width=2)),
+                           textinfo="value", textfont=dict(color="white", size=12),
+                           hovertemplate="%{label}: <b>%{value}</b> (%{percent})<extra></extra>"))
+    tot = sum(vals)
+    fig.add_annotation(text=f"<b style='font-size:22px'>{tot}</b><br><span style='font-size:11px;color:{MUTED}'>requirements</span>",
+                       showarrow=False, x=0.5, y=0.5)
+    _base(fig, height, margin=dict(l=10, r=10, t=10, b=10))
+    fig.update_layout(legend=dict(orientation="v", y=0.5, yanchor="middle", x=1.02))
+    return fig
+
+
+def heat_rate(rows, cols, z, text, height=None, colorscale=None):
+    fig = go.Figure(go.Heatmap(
+        z=z, x=cols, y=rows, text=text, texttemplate="%{text}", textfont=dict(size=11),
+        colorscale=colorscale or [[0, "#E24B47"], [0.5, "#F6D48A"], [1, "#1FA276"]], zmin=0, zmax=100,
+        xgap=3, ygap=3, colorbar=dict(title="% compliant", ticksuffix="%", thickness=10, len=0.8),
+        hovertemplate="%{y} · %{x}<br>Compliant: <b>%{z:.0f}%</b><extra></extra>"))
+    _base(fig, height or 80 + 30 * len(rows), legend=False, margin=dict(l=10, r=10, t=10, b=10))
+    fig.update_yaxes(autorange="reversed", showgrid=False, tickfont=dict(color=NAVY))
+    fig.update_xaxes(side="top", tickfont=dict(color=NAVY))
+    return fig
+
+
+COUNTRY_TONES = {"Spain": "#1B1F3B", "Portugal": "#3E4A7A", "Mexico": "#1FA276", "Colombia": "#6BBF8F",
+                 "France": "#2F6DB5", "Greece": "#5A93CF", "Italy": "#8A8FA3"}
+
+
+def treemap(df, height=430):
+    """Country → type of business → key activity, sized by number of requirements."""
+    g = df.groupby(["country", "business_type", "activity_disp"]).size().reset_index(name="n")
+    ids, labels, parents, values, colors = [], [], [], [], []
+    for c in g.country.unique():
+        ids.append(c); labels.append(c); parents.append(""); values.append(0); colors.append(COUNTRY_TONES.get(c, "#8A8FA3"))
+    for (c, b) in g[["country", "business_type"]].drop_duplicates().values:
+        ids.append(f"{c}|{b}"); labels.append(b); parents.append(c); values.append(0)
+        colors.append(COUNTRY_TONES.get(c, "#8A8FA3"))
+    for c, b, a, n in g.values:
+        ids.append(f"{c}|{b}|{a}"); labels.append(a); parents.append(f"{c}|{b}"); values.append(int(n))
+        colors.append(COUNTRY_TONES.get(c, "#8A8FA3"))
+    fig = go.Figure(go.Treemap(
+        ids=ids, labels=labels, parents=parents, values=values, branchvalues="remainder", maxdepth=2,
+        marker=dict(colors=colors, line=dict(color="white", width=1.5)), opacity=0.92,
+        textfont=dict(family=FONT, color="white"), tiling=dict(pad=2), pathbar=dict(visible=True),
+        hovertemplate="<b>%{label}</b><br>%{value} requirements<extra></extra>"))
+    fig.update_layout(height=height, margin=dict(l=0, r=0, t=24, b=0), paper_bgcolor="rgba(0,0,0,0)",
+                      font=dict(family=FONT, color=NAVY))
+    return fig
+
+
+def regulation_bars(series, height=None, color="#1B1F3B"):
+    fig = go.Figure(go.Bar(y=series.index, x=series.values, orientation="h",
+                           marker=dict(color=color, line=dict(width=0)), text=series.values, textposition="outside",
+                           textfont=dict(color=INK_2, size=11), cliponaxis=False,
+                           hovertemplate="%{y}<br>Referenced in <b>%{x}</b> requirements<extra></extra>"))
+    _base(fig, height or 60 + 24 * len(series), legend=False, margin=dict(l=10, r=30, t=10, b=10))
+    fig.update_yaxes(autorange="reversed", showgrid=False, tickfont=dict(color=NAVY, size=11))
+    fig.update_xaxes(showgrid=True, gridcolor=GRID)
+    return fig
