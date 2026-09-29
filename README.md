@@ -1,5 +1,7 @@
 # Amara NZero · Legal Compliance Dashboard (Streamlit)
 
+> Continuing the project? Start with **[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)**: requirements, decisions, data rules and open items.
+
 Interactive version of the dss+ Safety, Legal Compliance & Culture Assessment results (June 2026).
 
 ## Run it
