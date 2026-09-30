@@ -28,23 +28,50 @@ html, body, [class*="css"], .stMarkdown, .stText, button, input, textarea, selec
 .stApp {{ background:#FFFFFF; }}
 .block-container {{ padding-top: 1.2rem; padding-bottom: 2rem; max-width: 1500px; }}
 header[data-testid="stHeader"] {{ background: transparent; height: 0; }}
-.topbar {{ display:flex; align-items:center; gap:18px; }}
-.topbar img.dss {{ height:44px; }}
-.topbar img.amara {{ height:46px; }}
-.eyebrow {{ color:{INK_2}; font-size:13px; letter-spacing:.2px; }}
-.apptitle {{ color:{NAVY}; font-weight:800; font-size:26px; line-height:1.15; margin:2px 0 0 0; }}
-.flagstrip img {{ height:15px; margin-right:3px; }}
-.greenrule {{ height:4px; background:linear-gradient(90deg,{AMARA_GREEN} 0%, #1FA276 55%, #C4D600 100%);
-  border-radius:3px; margin:10px 0 6px 0; }}
-/* tabs */
-div[role="tablist"] {{ gap:6px; border-bottom:2px solid {AMARA_GREEN}; }}
-div[data-testid="stTab"] {{ background:{PANEL}; border-radius:8px 8px 0 0; padding:10px 18px !important; }}
-div[data-testid="stTab"] p {{ font-weight:700; color:{INK_2}; font-size:14px; }}
-div[data-testid="stTab"][aria-selected="true"] {{ background:{NAVY}; }}
-div[data-testid="stTab"][aria-selected="true"] p {{ color:white; }}
+.topbar {{ display:flex; align-items:center; gap:28px; padding:14px 6px 16px 6px; }}
+.topbar img.dss {{ height:72px; }}
+.topbar img.amara {{ height:84px; }}
+.topbar .divider {{ width:1px; align-self:stretch; background:#DCDFE6; }}
+.eyebrow {{ color:{INK_2}; font-size:14px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; }}
+.apptitle {{ color:{NAVY}; font-weight:800; font-size:36px; line-height:1.12; margin:4px 0 6px 0; letter-spacing:-.3px; }}
+.subtitle {{ color:{MUTED}; font-size:14px; }}
+.flagstrip img {{ height:17px; margin-right:4px; }}
+.greenrule {{ height:5px; background:linear-gradient(90deg,{AMARA_GREEN} 0%, #1FA276 55%, #C4D600 100%);
+  border-radius:3px; margin:0 0 14px 0; }}
+/* navigation: four rectangular boxes filling the row (works with old and new Streamlit radio markup) */
+.st-key-navbox, .st-key-navbox [data-testid="stElementContainer"], .st-key-navbox [data-testid="stRadio"],
+.st-key-langbox [data-testid="stElementContainer"], .st-key-langbox [data-testid="stRadio"] {{ width:100% !important; }}
+.st-key-navbox div[role="radiogroup"], .st-key-langbox div[role="radiogroup"] {{
+  display:flex !important; flex-wrap:nowrap; gap:10px; width:100%; }}
+.st-key-navbox div[role="radiogroup"] > *, .st-key-langbox div[role="radiogroup"] > * {{
+  flex:1 1 0; margin:0 !important; display:flex; }}
+.st-key-navbox div[role="radiogroup"] label, .st-key-langbox div[role="radiogroup"] label {{
+  width:100%; margin:0 !important; display:flex; align-items:center; justify-content:center; cursor:pointer; }}
+/* hide the radio circle, keep the text */
+.st-key-navbox div[role="radiogroup"] label div:not([data-testid="stMarkdownContainer"]):not(:has([data-testid="stMarkdownContainer"])):not([data-testid="stMarkdownContainer"] *),
+.st-key-langbox div[role="radiogroup"] label div:not([data-testid="stMarkdownContainer"]):not(:has([data-testid="stMarkdownContainer"])):not([data-testid="stMarkdownContainer"] *) {{
+  display:none !important; }}
+.st-key-navbox div[role="radiogroup"] > * {{ background:{PANEL}; border:1px solid #DCDFE6; border-radius:6px;
+  min-height:52px; transition:all .15s ease; }}
+.st-key-navbox div[role="radiogroup"] > *:hover {{ border-color:{NAVY}; background:#E9EBF1; }}
+.st-key-navbox div[role="radiogroup"] label {{ padding:12px 10px; }}
+.st-key-navbox div[role="radiogroup"] p {{ font-weight:700; font-size:15px; color:{INK_2}; margin:0; text-align:center; }}
+.st-key-navbox div[role="radiogroup"] > *:has(input:checked) {{ background:{NAVY}; border-color:{NAVY};
+  box-shadow:inset 0 -4px 0 {AMARA_GREEN}; }}
+.st-key-navbox div[role="radiogroup"] > *:has(input:checked) p {{ color:white; }}
+.st-key-langbox {{ background:{PANEL}; border:1px solid #DCDFE6; border-radius:6px; padding:6px 8px; }}
+.st-key-langbox div[role="radiogroup"] {{ align-items:center; gap:6px; }}
+.st-key-langbox div[role="radiogroup"]::before {{ content:"🌐 Translate"; font-size:13px; font-weight:700;
+  color:{INK_2}; white-space:nowrap; margin-right:2px; }}
+.st-key-langbox div[role="radiogroup"] > * {{ border-radius:5px; background:white; border:1px solid #DCDFE6; }}
+.st-key-langbox div[role="radiogroup"] label {{ padding:7px 8px; }}
+.st-key-langbox div[role="radiogroup"] p {{ font-size:13.5px; font-weight:600; color:{INK_2}; margin:0; }}
+.st-key-langbox div[role="radiogroup"] > *:has(input:checked) {{ background:{AMARA_GREEN}; border-color:{AMARA_GREEN}; }}
+.st-key-langbox div[role="radiogroup"] > *:has(input:checked) p {{ color:white; }}
+.navrule {{ height:2px; background:#E6E8EE; margin:6px 0 4px 0; }}
 /* sections, kpis */
-.section h3 {{ color:{NAVY}; font-weight:800; font-size:20px; margin:18px 0 2px 0; }}
-.section p {{ color:{MUTED}; font-size:13px; margin:0 0 8px 0; }}
+.section h3 {{ color:{NAVY}; font-weight:800; font-size:22px; margin:18px 0 2px 0; }}
+.section p {{ color:{INK_2}; font-size:14px; margin:0 0 10px 0; }}
 .kpi-row {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin:6px 0 10px 0; }}
 .kpi {{ background:{PANEL}; border-radius:10px; padding:12px 14px; border-left:4px solid {NAVY}; }}
 .kpi-label {{ color:{INK_2}; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; }}
@@ -61,12 +88,6 @@ div[data-testid="stTab"][aria-selected="true"] p {{ color:white; }}
 .card {{ background:white; border:1px solid #E6E8EE; border-radius:10px; padding:12px 14px; height:100%; }}
 .card h4 {{ margin:0 0 6px 0; font-size:14px; color:{NAVY}; font-weight:700; }}
 .card ul {{ margin:0; padding-left:16px; font-size:12.5px; color:{INK_2}; }}
-.actgrid {{ display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:12px; }}
-.actcard {{ background:white; border:1px solid #E6E8EE; border-left:4px solid {DSS_RED}; border-radius:8px;
-  padding:10px 12px; }}
-.actcard h5 {{ margin:0 0 4px 0; font-size:13.5px; color:{NAVY}; font-weight:700; }}
-.actcard .meta {{ color:{MUTED}; font-size:11.5px; margin-bottom:4px; }}
-.actcard ul {{ margin:0; padding-left:16px; font-size:12px; color:{INK_2}; }}
 table.assess {{ width:100%; border-collapse:collapse; font-size:13px; }}
 table.assess th {{ background:{NAVY}; color:white; text-align:left; padding:9px 10px; position:sticky; top:0; z-index:1; }}
 table.assess td {{ border-bottom:1px solid #E6E8EE; padding:10px; vertical-align:top; color:{NAVY}; }}
@@ -85,37 +106,45 @@ table.assess td ul {{ margin:0; padding-left:18px; }}
 .chip {{ background:rgba(255,255,255,.12); border-radius:999px; padding:4px 12px; font-size:12px; margin-left:6px; }}
 .note {{ color:{MUTED}; font-size:12px; }}
 .srcnote {{ color:{MUTED}; font-size:11.5px; margin-top:-6px; }}
-.st-key-langbox {{ background:{PANEL}; border-radius:10px; padding:8px 10px 4px 10px; }}
 .footer {{ color:{MUTED}; font-size:11.5px; border-top:1px solid #E6E8EE; margin-top:28px; padding-top:10px;
   display:flex; justify-content:space-between; }}
 div[data-testid="stDataFrame"] {{ border:1px solid #D5D8E0; border-radius:8px; }}
 </style>
 """, unsafe_allow_html=True)
 
-# ── Header with the always-on translate switch (top right) ───────────────────────
-hl, hr = st.columns([5, 1.25], vertical_alignment="center")
-with hl:
-    flags = "".join(flag_html(c, 15) for c in ["CO", "MX", "GR", "IT", "ES", "PT", "FR"])
-    st.markdown(f"""
-    <div class="topbar">
-      <img class="dss" src="data:image/png;base64,{img_b64(ASSETS / 'dss_logo.png')}">
-      <div style="flex:1">
-        <div class="eyebrow">Safety, Legal Compliance &amp; Culture Assessment · Results dashboard · June 2026</div>
-        <div class="apptitle">Legal &amp; Regulatory Compliance — Amara NZero</div>
-        <div class="flagstrip" style="margin-top:4px">{flags}</div>
-      </div>
-      <img class="amara" src="data:image/png;base64,{img_b64(ASSETS / 'amara_logo.png')}">
-    </div>""", unsafe_allow_html=True)
-with hr:
-    with st.container(key="langbox"):
-        choice = st.segmented_control("🌐 Translate", ["Original", "English"], default="Original",
-                                      key="lang_widget", help="Original = language of the source checklists and "
-                                      "reports (Spanish, French, Italian, Portuguese). English = full translation.")
-        st.session_state["lang_mode"] = choice or "Original"
-st.markdown('<div class="greenrule"></div>', unsafe_allow_html=True)
+# Keep the site selection alive while other pages are shown (widgets not rendered lose their state).
+for _k in ("sel_cluster", "sel_country", "sel_site"):
+    if _k in st.session_state:
+        st.session_state[_k] = st.session_state[_k]
 
-tab1, tab2, tab3, tab4 = st.tabs(["①  Legal requirements", "②  Site compliance", "③  Cluster results",
-                                  "④  Global · high criticality"])
+# ── Header ───────────────────────────────────────────────────────────────────────
+flags = "".join(flag_html(c, 17) for c in ["ES", "PT", "MX", "CO", "FR", "GR", "IT"])
+st.markdown(f"""
+<div class="topbar">
+  <img class="dss" src="data:image/png;base64,{img_b64(ASSETS / 'dss_logo.png')}" alt="dss+">
+  <div class="divider"></div>
+  <div style="flex:1">
+    <div class="eyebrow">Safety, Legal Compliance &amp; Culture Assessment · June 2026</div>
+    <div class="apptitle">Legal &amp; Regulatory Compliance — Amara NZero</div>
+    <div class="subtitle"><span class="flagstrip">{flags}</span>&nbsp; 7 countries · 4 clusters · 23 sites assessed</div>
+  </div>
+  <img class="amara" src="data:image/png;base64,{img_b64(ASSETS / 'amara_logo.png')}" alt="Amara NZero">
+</div>
+<div class="greenrule"></div>""", unsafe_allow_html=True)
+
+# ── Navigation (four boxes) + translate switch on the same row ───────────────────
+PAGES = ["Legal requirements", "Site compliance", "Cluster results", "Global · high criticality"]
+nav_col, lang_col = st.columns([5, 1.25], vertical_alignment="center", gap="medium")
+with nav_col:
+    with st.container(key="navbox"):
+        PAGE = st.radio("Section", PAGES, horizontal=True, key="nav", label_visibility="collapsed")
+with lang_col:
+    with st.container(key="langbox"):
+        choice = st.radio("Translate", ["Original", "English"], horizontal=True, key="lang_widget",
+                          label_visibility="collapsed",
+                          help="Original = language of the source checklists and reports. English = full translation.")
+        st.session_state["lang_mode"] = choice or "Original"
+st.markdown('<div class="navrule"></div>', unsafe_allow_html=True)
 
 
 def to_excel(frame, sheet="Data"):
@@ -140,107 +169,96 @@ def lang_badge(langs):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 1 — Identification of legal requirements (no criticality / no site status)
+# PAGE 1 — Identification of legal requirements (general overview, no company performance)
 # ══════════════════════════════════════════════════════════════════════════════
-with tab1:
-    section("01 · Identification of key activities and legal requirements",
-            "Every legal requirement identified for Amara NZero's activities, per country and type of business — "
-            "a general overview without criticality levels or assessment results.")
-    f1, f2, f3, f4 = st.columns([1.2, 1.2, 1.2, 1.6])
-    with f1:
-        t1_cluster = st.multiselect("Region (cluster)", CLUSTER_ORDER, placeholder="All regions", key="t1_cluster")
-    base = df if not t1_cluster else df[df.cluster.isin(t1_cluster)]
-    with f2:
-        t1_country = st.multiselect("Country", sorted(base.country.unique()), placeholder="All countries", key="t1_country")
-    base = base if not t1_country else base[base.country.isin(t1_country)]
-    with f3:
-        t1_type = st.multiselect("Type of business", [b for b in BUSINESS_ORDER if b in set(base.business_type)],
-                                 placeholder="All types", key="t1_type")
-    base = base if not t1_type else base[base.business_type.isin(t1_type)]
-    with f4:
-        t1_q = st.text_input("Search requirement, regulation or activity", placeholder="e.g. ATEX, RD 486/1997, contractor…",
-                             key="t1_q")
+if PAGE == PAGES[0]:
+    section("Identification of key activities and legal requirements",
+            "Legal requirements identified for Amara NZero's activities")
 
-    view = base.copy()
+    view = df.copy()
     view["activity_disp"] = view.activity.map(T)
-    if t1_q:
-        q = t1_q.lower()
-        en_cols = ["activity", "norm", "requirement", "question", "evidence", "eu_directive"]
-        mask = pd.Series(False, index=view.index)
-        for c in en_cols:
-            mask |= view[c].str.lower().str.contains(q, regex=False)
-            mask |= view[c].map(lambda v: TRMAP.get(v, v)).str.lower().str.contains(q, regex=False)
-        view = view[mask]
-
     regs = view.norm.map(split_regulations).explode().dropna()
     kpi_row([
-        ("Legal requirements", f"{len(view):,}", "checklist items identified"),
-        ("Key activities", f"{view.activity.nunique():,}", "distinct activity groups"),
+        ("Legal requirements", f"{len(view):,}", "identified across all sites"),
+        ("Key activities", f"{view.activity.nunique():,}", "activity groups"),
         ("Regulations referenced", f"{regs.nunique():,}", "laws, decrees, standards"),
         ("Sites", f"{view.site_id.nunique()}", f"{view.country.nunique()} countries"),
-        ("Types of business", f"{view.business_type.nunique()}", " · ".join(b for b in BUSINESS_ORDER if b in set(view.business_type))),
+        ("Types of business", f"{view.business_type.nunique()}",
+         " · ".join(b for b in BUSINESS_ORDER if b in set(view.business_type))),
     ])
 
-    if view.empty:
-        st.info("No requirements match these filters.")
-    else:
-        c1, c2 = st.columns([1.35, 1])
-        with c1:
-            st.markdown("**Where the requirements sit** · country → type of business → key activity (click to zoom)")
-            st.plotly_chart(C.treemap(view, height=440), width="stretch", config=C.CONFIG)
-        with c2:
-            st.markdown("**Most-referenced regulations**")
-            top = regs.value_counts().head(14)
-            st.plotly_chart(C.regulation_bars(top, height=440), width="stretch", config=C.CONFIG)
+    c1, c2 = st.columns([1.3, 1], gap="large")
+    with c1:
+        st.markdown("**Requirements by country and type of business** · number of legal requirements "
+                    "(click a country to focus, click the top bar to go back)")
+        st.plotly_chart(C.treemap(view, height=470), width="stretch", config=C.CONFIG, key="t1_tree")
+    with c2:
+        st.markdown("**Requirements matrix** · country × type of business")
+        st.plotly_chart(C.count_matrix(view, height=470), width="stretch", config=C.CONFIG, key="t1_matrix")
 
-        # Activity cards (deck slide "Identification of key activities and legal requirements")
-        section("Key activities and related regulations",
-                "Grouped as in the site-visit reports: each key activity with the regulations that govern it.")
-        n_act = view.activity.nunique()
-        if n_act > 45:
-            st.markdown(f'<div class="note">{n_act} key activities in the current selection — pick a country or type of '
-                        'business above to show the activity cards.</div>', unsafe_allow_html=True)
-        else:
-            grp = (view.groupby(["country", "business_type", "activity"], sort=False)
-                       .agg(n=("id", "size"), norms=("norm", lambda s: [r for v in s for r in split_regulations(v)]))
-                       .reset_index())
-            html = '<div class="actgrid">'
-            for _, r in grp.iterrows():
-                uniq = list(dict.fromkeys(r.norms))
-                items = "".join(f"<li>{esc(x)}</li>" for x in uniq[:7])
-                more = f'<li style="list-style:none;color:{MUTED}">+{len(uniq) - 7} more</li>' if len(uniq) > 7 else ""
-                html += (f'<div class="actcard"><h5>{esc(T(r.activity))}</h5>'
-                         f'<div class="meta">{flag_html(COUNTRY_CODE[r.country], 11)}{r.country} · {r.business_type} · '
-                         f'{r.n} requirement{"s" if r.n != 1 else ""}</div><ul>{items}{more}</ul></div>')
-            st.markdown(html + "</div>", unsafe_allow_html=True)
+    c3, c4 = st.columns([1, 1.3], gap="large")
+    with c3:
+        st.markdown("**Most-referenced regulations** · number of requirements citing each")
+        top = regs.value_counts().head(15)
+        st.plotly_chart(C.regulation_bars(top, height=500), width="stretch", config=C.CONFIG, key="t1_regs")
+    with c4:
+        st.markdown("**Requirements per site** · coloured by type of business")
+        st.plotly_chart(C.site_bars(view, height=500), width="stretch", config=C.CONFIG, key="t1_sites")
 
-        # Excel-style register
-        section("Legal requirements register", lang_badge(view.lang))
-        fields = ["country", "site", "business_type", "id", "activity", "norm", "eu_directive", "requirement",
-                  "question", "evidence", "notes", "frequency"]
-        fields = [f for f in fields if (view[f] != "").any()]
-        out = translate_df(view[fields], ["activity", "norm", "eu_directive", "requirement", "question", "evidence",
-                                          "notes", "frequency"])
-        labels = column_labels(fields, view.lang, list(view.site_id.unique()))
-        out = out.rename(columns=labels)
-        wide = {labels[f]: st.column_config.TextColumn(labels[f], width="large") for f in
-                ["requirement", "question", "evidence", "notes", "norm", "frequency"] if f in labels}
-        st.dataframe(out, hide_index=True, height=560, width="stretch", row_height=38,
-                     column_config={**wide, labels["id"]: st.column_config.TextColumn(labels["id"], width="small"),
-                                    labels["country"]: st.column_config.TextColumn(labels["country"], width="small"),
-                                    labels["business_type"]: st.column_config.TextColumn(labels["business_type"], width="small"),
-                                    labels["site"]: st.column_config.TextColumn(labels["site"], width="medium")})
-        d1, d2, _ = st.columns([1, 1, 4])
-        d1.download_button("⬇ Excel", to_excel(out, "Legal requirements"), "amara_legal_requirements.xlsx",
-                           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", width="stretch")
-        d2.download_button("⬇ CSV", out.to_csv(index=False).encode("utf-8-sig"), "amara_legal_requirements.csv",
-                           "text/csv", width="stretch")
+    # Register: general list of legal requirements, filterable
+    section("Legal requirements register", lang_badge(view.lang) +
+            " · filter by country, site, type of business, key activity or requirement")
+    f1, f2, f3, f4, f5 = st.columns([1, 1.3, 1, 1.5, 1.5])
+    with f1:
+        r_country = st.multiselect("Country", [c for c in ["Spain", "Portugal", "Mexico", "Colombia", "France", "Greece", "Italy"]],
+                                   placeholder="All countries", key="r_country")
+    reg = view if not r_country else view[view.country.isin(r_country)]
+    with f2:
+        r_site = st.multiselect("Site", list(dict.fromkeys(reg.site)), placeholder="All sites", key="r_site")
+    reg = reg if not r_site else reg[reg.site.isin(r_site)]
+    with f3:
+        r_type = st.multiselect("Type of business", [b for b in BUSINESS_ORDER if b in set(reg.business_type)],
+                                placeholder="All types", key="r_type")
+    reg = reg if not r_type else reg[reg.business_type.isin(r_type)]
+    with f4:
+        r_act = st.multiselect("Key activity", sorted(set(reg.activity_disp)), placeholder="All activities", key="r_act")
+    reg = reg if not r_act else reg[reg.activity_disp.isin(r_act)]
+    with f5:
+        r_q = st.text_input("Requirement / regulation contains", placeholder="e.g. ATEX, RD 486/1997, contractor…",
+                            key="r_q")
+    if r_q:
+        q = r_q.lower()
+        mask = pd.Series(False, index=reg.index)
+        for c in ["requirement", "norm", "activity"]:
+            mask |= reg[c].str.lower().str.contains(q, regex=False)
+            mask |= reg[c].map(lambda v: TRMAP.get(v, v)).str.lower().str.contains(q, regex=False)
+        reg = reg[mask]
+
+    fields = ["country", "site", "business_type", "id", "activity", "requirement", "norm"]
+    out = translate_df(reg[fields], ["activity", "requirement", "norm"])
+    labels = column_labels(fields, reg.lang, list(reg.site_id.unique()))
+    out = out.rename(columns=labels)
+    st.dataframe(out, hide_index=True, height=600, width="stretch", row_height=40,
+                 column_config={labels["country"]: st.column_config.TextColumn(labels["country"], width="small"),
+                                labels["site"]: st.column_config.TextColumn(labels["site"], width="medium"),
+                                labels["business_type"]: st.column_config.TextColumn(labels["business_type"], width="medium"),
+                                labels["id"]: st.column_config.TextColumn(labels["id"], width="small"),
+                                labels["activity"]: st.column_config.TextColumn(labels["activity"], width="medium"),
+                                labels["requirement"]: st.column_config.TextColumn(labels["requirement"], width="large"),
+                                labels["norm"]: st.column_config.TextColumn(labels["norm"], width="large")})
+    d0, d1, d2 = st.columns([4, 1, 1])
+    d0.markdown(f'<div class="note">{len(out):,} of {len(view):,} requirements shown. Compliance results per site are '
+                'in <b>Site compliance</b>.</div>', unsafe_allow_html=True)
+    d1.download_button("⬇ Excel", to_excel(out, "Legal requirements"), "amara_legal_requirements.xlsx",
+                       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", width="stretch")
+    d2.download_button("⬇ CSV", out.to_csv(index=False).encode("utf-8-sig"), "amara_legal_requirements.csv",
+                       "text/csv", width="stretch")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 2 — Site drill-down
+# PAGE 2 — Site drill-down
 # ══════════════════════════════════════════════════════════════════════════════
-with tab2:
-    section("02 · Legal compliance assessment by site",
+if PAGE == PAGES[1]:
+    section("Legal compliance assessment by site",
             "Choose a region, country and site to see its compliance results, key gaps, the site-visit findings and the "
             "full assessed checklist.")
     s1, s2, s3 = st.columns([1, 1, 1.6])
@@ -294,7 +312,7 @@ with tab2:
                 h = grp["figures"]
                 src += (f" The deck reports <b>{grp['label']}</b> together: High {h['High'][0]}/{h['High'][1]}/{h['High'][2]}, "
                         f"Medium {h['Medium'][0]}/{h['Medium'][1]}/{h['Medium'][2]}, Low {h['Low'][0]}/{h['Low'][1]}/{h['Low'][2]} "
-                        "(compliant / partial / non-compliant) — see the Cluster tab.")
+                        "(compliant / partial / non-compliant) — see Cluster results.")
         st.plotly_chart(C.criticality_stack(figd, height=380), width="stretch", config=C.CONFIG, key="site_crit")
         st.markdown(f'<div class="srcnote">{src}</div>', unsafe_allow_html=True)
     with g2:
@@ -339,7 +357,7 @@ with tab2:
         section("Legal compliance assessment · site-visit report",
                 f"Key activities, governing regulations, compliance indicator and findings — from "
                 f"<i>{esc(rep.get('report_file', ''))}</i>. "
-                + ("" if rep.get("report_language") == "en" or is_en() else "Original language shown; switch to English at the top right."))
+                + ("" if rep.get("report_language") == "en" or is_en() else "Original language shown; switch to English with the Translate control."))
         stf = st.multiselect("Show status", ["Compliant", "Partially compliant", "Non-compliant", "Not assessed"],
                              default=["Compliant", "Partially compliant", "Non-compliant", "Not assessed"], key="rep_status")
         rows_html = ""
@@ -432,14 +450,14 @@ with tab2:
                        width="stretch", key="dl_site_c")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 3 — Cluster of the selected site
+# PAGE 3 — Cluster of the selected site
 # ══════════════════════════════════════════════════════════════════════════════
-with tab3:
+if PAGE == PAGES[2]:
     cl = SITES.set_index("site_id").cluster[st.session_state.get("sel_site", SITES.site_id.iloc[0])]
     meta = DECK["cluster_meta"][cl]
     cfig = DECK["cluster_figures"][cl]
-    section(f"03 · {cl} cluster results",
-            f"Cluster of the site selected in the Site tab ({esc(SITES.set_index('site_id').site[st.session_state.get('sel_site', SITES.site_id.iloc[0])])}). "
+    section(f"{cl} cluster results",
+            f"Cluster of the site selected in Site compliance ({esc(SITES.set_index('site_id').site[st.session_state.get('sel_site', SITES.site_id.iloc[0])])}). "
             "Change the site there to switch cluster. Figures as presented in the dss+ cluster results (English).")
     st.markdown(f"""<div class="sitebanner"><div><div class="t">{''.join(flag_html(f, 22) for f in meta['flags'])} {cl}</div>
         <div class="m">{esc(meta['scope'])}</div></div><div class="m" style="max-width:640px">{esc(meta['headline'])}</div></div>""",
@@ -505,10 +523,10 @@ with tab3:
                             config=C.CONFIG, key="cl_heat")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 4 — Global, highest criticality
+# PAGE 4 — Global, highest criticality
 # ══════════════════════════════════════════════════════════════════════════════
-with tab4:
-    section("04 · Global results · high criticality",
+if PAGE == PAGES[3]:
+    section("Global results · high criticality",
             "High-criticality legal requirements across all clusters by type of business, as presented in the Global "
             "Results Presentation (June 2026, English).")
     gh = DECK["global_high"]

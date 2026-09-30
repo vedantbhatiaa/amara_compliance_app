@@ -15,9 +15,9 @@ results interactively.
 
 - Owner: Vedant Bhatia (Data Scientist intern, dss+ London)
 - Repo: https://github.com/vedantbhatiaa/amara_compliance_app
-- Status: **first draft (v0.1) complete and working**; many changes still to come (see §10).
+- Status: **v0.2**: v0.1 draft plus a UI round (header, navigation, page 1 redesign); more changes to come (see §10).
 - Run: `pip install -r requirements.txt` → `streamlit run app.py` → http://localhost:8501
-- Tested with Python 3.11, Streamlit 1.64, Plotly 7.1, pandas 3.0.
+- Tested with Python 3.11, Streamlit 1.64, Plotly 7.1, pandas 3.0. Needs Streamlit ≥ 1.50 (`pip install -U streamlit`).
 
 ---
 
@@ -156,13 +156,20 @@ data_prep/        build_data.py, build_deck.py, TRANSLATION_BRIEF.md, REPORT_BRI
 
 ## 7. What each tab does now
 
-**Header**: dss+ logo, title, country flags, Amara logo; `st.segmented_control` "Original | English"
-(key `lang_widget` → `st.session_state["lang_mode"]`). Every text value passes through `T()`/`RT()`.
+**Header**: large dss+ logo | eyebrow + title + flags | Amara NZero logo, green gradient rule below.
+**Navigation** (v0.2): four equal rectangular boxes filling the row (`st.radio` key `nav`, styled via
+`.st-key-navbox`; only the selected page is rendered) and the **Translate** box on the same row at the right
+(`st.radio` key `lang_widget` → `st.session_state["lang_mode"]`). Every text value passes through `T()`/`RT()`.
+Site selection (`sel_cluster/sel_country/sel_site`) is kept alive across pages by re-assigning those keys at the
+top of each run.
 
-**① Legal requirements**: filters (cluster, country, business type, free-text search in both languages);
-KPIs; treemap country→type→activity; top-14 referenced regulations; activity cards (shown when ≤45 activities);
-register table (country, site, type, ID, activity, norm, EU directive, requirement, question, evidence, notes,
-frequency) with Excel/CSV export. Headers switch to the source language in Original mode when one language is shown.
+**① Legal requirements** (general overview, no company performance and no criticality): title "Identification of key
+activities and legal requirements", subtitle "Legal requirements identified for Amara NZero's activities";
+KPIs; treemap All countries → country → type of business with the count on every tile (a single root node lets you zoom
+back out); country × type count matrix with totals; top-15 referenced regulations; requirements per site coloured
+by type; **register** (Country, Site, Type of business, ID, Key activity, Legal requirement, Standard / Reference)
+with its own filters (country, site, type, key activity, text search) and Excel/CSV export.
+The earlier top filter bar and "Key activities and related regulations" cards were removed at the owner's request.
 
 **② Site compliance**: selectboxes `sel_cluster` → `sel_country` → `sel_site`; site banner; KPIs; deck
 criticality chart + key gaps panel; status donut + crosstab; compliance by key activity; site-visit report
@@ -185,8 +192,9 @@ Montserrat (Google Fonts, falls back offline). Stacked bars have a white 1.5px g
 
 ## 8. Gotchas found while building
 
-- Streamlit 1.64 tabs render as `div[data-testid="stTab"]` inside `div[role="tablist"]`
-  (not `button[data-baseweb="tab"]`); the CSS targets these.
+- `st.tabs` markup differs between Streamlit versions (the owner's install showed unstyled tabs), so navigation
+  now uses a styled `st.radio`. Its CSS targets `div[role="radiogroup"] > *` and `:has(input:checked)`, which works
+  with both the old (baseweb) and new (react-aria) radio markup.
 - Python 3.11: an f-string expression cannot contain a backslash (caused a SyntaxError once).
 - `load_all()` must be `st.cache_resource`, **not** `cache_data`: cache_data copies the whole dataset on every
   `T()` call, which made English mode about 10× slower.
@@ -202,7 +210,8 @@ Montserrat (Google Fonts, falls back offline). Stacked bars have a white 1.5px g
 ---
 
 ## 10. Open items / next steps
-- [ ] Owner's list of changes to the draft (to be supplied).
+- [x] UI round 1: header, 4-box navigation with Translate alongside, page 1 simplified to a general overview.
+- [ ] Next UI rounds on pages 2–4 (owner to supply).
 - [ ] Decide whether the translate switch should also translate UI labels into the source language (today the
       UI chrome stays English; only data and report text switch).
 - [ ] Spot-check translations with native speakers for the sensitive legal terms (see TRANSLATION_BRIEF.md).
