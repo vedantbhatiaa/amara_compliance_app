@@ -1,676 +1,8 @@
 {
- "site_figures": {
-  "ES-VIT": {
-   "High": [
-    2,
-    15,
-    9
-   ],
-   "Medium": [
-    1,
-    16,
-    1
-   ],
-   "Low": [
-    0,
-    1,
-    1
-   ]
-  },
-  "ES-SEV": {
-   "High": [
-    20,
-    8,
-    7
-   ],
-   "Medium": [
-    4,
-    11,
-    4
-   ],
-   "Low": [
-    0,
-    0,
-    0
-   ]
-  },
-  "ES-MEC": {
-   "High": [
-    16,
-    2,
-    14
-   ],
-   "Medium": [
-    8,
-    11,
-    7
-   ],
-   "Low": [
-    0,
-    1,
-    4
-   ]
-  },
-  "ES-VAL": {
-   "High": [
-    16,
-    3,
-    6
-   ],
-   "Medium": [
-    8,
-    16,
-    3
-   ],
-   "Low": [
-    1,
-    9,
-    0
-   ]
-  },
-  "ES-AND": {
-   "High": [
-    1,
-    16,
-    4
-   ],
-   "Medium": [
-    1,
-    8,
-    15
-   ],
-   "Low": [
-    0,
-    1,
-    3
-   ]
-  },
-  "ES-BUR": {
-   "High": [
-    9,
-    6,
-    2
-   ],
-   "Medium": [
-    2,
-    18,
-    1
-   ],
-   "Low": [
-    0,
-    11,
-    0
-   ]
-  },
-  "ES-ACO": {
-   "High": [
-    8,
-    0,
-    0
-   ],
-   "Medium": [
-    2,
-    1,
-    0
-   ],
-   "Low": [
-    0,
-    0,
-    0
-   ]
-  },
-  "ES-MAD": {
-   "High": [
-    8,
-    1,
-    0
-   ],
-   "Medium": [
-    0,
-    9,
-    6
-   ],
-   "Low": [
-    3,
-    1,
-    0
-   ]
-  },
-  "PT-AVE": {
-   "High": [
-    4,
-    3,
-    1
-   ],
-   "Medium": [
-    11,
-    4,
-    4
-   ],
-   "Low": [
-    2,
-    7,
-    1
-   ]
-  },
-  "MX-MTY": {
-   "High": [
-    23,
-    7,
-    5
-   ],
-   "Medium": [
-    22,
-    6,
-    0
-   ],
-   "Low": [
-    8,
-    0,
-    1
-   ]
-  },
-  "MX-INO": {
-   "High": [
-    13,
-    0,
-    3
-   ],
-   "Medium": [
-    7,
-    2,
-    3
-   ],
-   "Low": [
-    7,
-    1,
-    0
-   ]
-  },
-  "MX-CDMX": {
-   "High": [
-    22,
-    1,
-    2
-   ],
-   "Medium": [
-    7,
-    3,
-    1
-   ],
-   "Low": [
-    6,
-    1,
-    0
-   ]
-  },
-  "CO-HOM": {
-   "High": [
-    3,
-    1,
-    1
-   ],
-   "Medium": [
-    1,
-    1,
-    2
-   ],
-   "Low": [
-    1,
-    2,
-    9
-   ]
-  },
-  "CO-EPC": {
-   "High": [
-    6,
-    0,
-    10
-   ],
-   "Medium": [
-    3,
-    4,
-    12
-   ],
-   "Low": [
-    1,
-    2,
-    1
-   ]
-  },
-  "FR-OFF": {
-   "High": [
-    0,
-    0,
-    3
-   ],
-   "Medium": [
-    0,
-    0,
-    5
-   ],
-   "Low": [
-    0,
-    0,
-    10
-   ]
-  },
-  "FR-EPC": {
-   "High": [
-    0,
-    1,
-    5
-   ],
-   "Medium": [
-    0,
-    0,
-    4
-   ],
-   "Low": [
-    0,
-    0,
-    3
-   ]
-  },
-  "GR-ATH": {
-   "High": [
-    4,
-    0,
-    3
-   ],
-   "Medium": [
-    4,
-    1,
-    3
-   ],
-   "Low": [
-    1,
-    0,
-    2
-   ]
-  },
-  "IT-BUC": {
-   "High": [
-    11,
-    2,
-    0
-   ],
-   "Medium": [
-    14,
-    2,
-    1
-   ],
-   "Low": [
-    3,
-    4,
-    0
-   ]
-  }
- },
- "group_figures": {
-  "MX-SERVICES": {
-   "label": "Mexico in-house services (Iberdrola, Schneider, Braskem)",
-   "sites": [
-    "MX-IBE",
-    "MX-SCH",
-    "MX-BRA"
-   ],
-   "figures": {
-    "High": [
-     16,
-     7,
-     13
-    ],
-    "Medium": [
-     17,
-     4,
-     9
-    ],
-    "Low": [
-     7,
-     6,
-     4
-    ]
-   }
-  }
- },
- "cluster_figures": {
-  "Spain & Portugal": {
-   "Office": {
-    "High": [
-     12,
-     3,
-     2
-    ],
-    "Medium": [
-     11,
-     13,
-     10
-    ],
-    "Low": [
-     5,
-     8,
-     1
-    ]
-   },
-   "Factory": {
-    "High": [
-     2,
-     15,
-     9
-    ],
-    "Medium": [
-     1,
-     16,
-     1
-    ],
-    "Low": [
-     0,
-     1,
-     1
-    ]
-   },
-   "Warehouse": {
-    "High": [
-     62,
-     35,
-     33
-    ],
-    "Medium": [
-     23,
-     64,
-     30
-    ],
-    "Low": [
-     1,
-     22,
-     7
-    ]
-   },
-   "Services": {
-    "High": [
-     10,
-     0,
-     0
-    ],
-    "Medium": [
-     0,
-     1,
-     0
-    ],
-    "Low": [
-     0,
-     0,
-     0
-    ]
-   }
-  },
-  "Mexico & Colombia": {
-   "Office": {
-    "High": [
-     25,
-     2,
-     3
-    ],
-    "Medium": [
-     8,
-     4,
-     3
-    ],
-    "Low": [
-     7,
-     3,
-     9
-    ]
-   },
-   "EPC": {
-    "High": [
-     19,
-     0,
-     13
-    ],
-    "Medium": [
-     11,
-     5,
-     15
-    ],
-    "Low": [
-     8,
-     3,
-     1
-    ]
-   },
-   "Warehouse": {
-    "High": [
-     23,
-     7,
-     5
-    ],
-    "Medium": [
-     22,
-     6,
-     0
-    ],
-    "Low": [
-     8,
-     0,
-     1
-    ]
-   },
-   "Services": {
-    "High": [
-     16,
-     7,
-     13
-    ],
-    "Medium": [
-     17,
-     4,
-     9
-    ],
-    "Low": [
-     7,
-     6,
-     4
-    ]
-   }
-  },
-  "France": {
-   "Office": {
-    "High": [
-     0,
-     0,
-     3
-    ],
-    "Medium": [
-     0,
-     0,
-     5
-    ],
-    "Low": [
-     0,
-     0,
-     10
-    ]
-   },
-   "EPC": {
-    "High": [
-     0,
-     1,
-     5
-    ],
-    "Medium": [
-     0,
-     0,
-     4
-    ],
-    "Low": [
-     0,
-     0,
-     3
-    ]
-   }
-  },
-  "Greece & Italy": {
-   "Office": {
-    "High": [
-     15,
-     2,
-     3
-    ],
-    "Medium": [
-     18,
-     3,
-     3
-    ],
-    "Low": [
-     4,
-     5,
-     2
-    ]
-   }
-  }
- },
- "global_high": [
-  {
-   "business_type": "Office",
-   "cluster": "France",
-   "flags": [
-    "FR"
-   ],
-   "values": [
-    0,
-    0,
-    3
-   ]
-  },
-  {
-   "business_type": "Office",
-   "cluster": "Greece & Italy",
-   "flags": [
-    "GR",
-    "IT"
-   ],
-   "values": [
-    15,
-    2,
-    3
-   ]
-  },
-  {
-   "business_type": "Office",
-   "cluster": "Mexico & Colombia",
-   "flags": [
-    "MX",
-    "CO"
-   ],
-   "values": [
-    25,
-    2,
-    3
-   ]
-  },
-  {
-   "business_type": "Office",
-   "cluster": "Spain & Portugal",
-   "flags": [
-    "ES",
-    "PT"
-   ],
-   "values": [
-    12,
-    3,
-    2
-   ]
-  },
-  {
-   "business_type": "EPC",
-   "cluster": "France",
-   "flags": [
-    "FR"
-   ],
-   "values": [
-    0,
-    1,
-    5
-   ]
-  },
-  {
-   "business_type": "EPC",
-   "cluster": "Mexico & Colombia",
-   "flags": [
-    "MX",
-    "CO"
-   ],
-   "values": [
-    19,
-    0,
-    13
-   ]
-  },
-  {
-   "business_type": "Factory",
-   "cluster": "Spain & Portugal",
-   "flags": [
-    "ES"
-   ],
-   "values": [
-    2,
-    15,
-    9
-   ]
-  },
-  {
-   "business_type": "Warehouse",
-   "cluster": "Mexico & Colombia",
-   "flags": [
-    "MX"
-   ],
-   "values": [
-    23,
-    7,
-    5
-   ]
-  },
-  {
-   "business_type": "Warehouse",
-   "cluster": "Spain & Portugal",
-   "flags": [
-    "ES"
-   ],
-   "values": [
-    62,
-    35,
-    33
-   ]
-  },
-  {
-   "business_type": "Services",
-   "cluster": "Mexico & Colombia",
-   "flags": [
-    "MX"
-   ],
-   "values": [
-    16,
-    7,
-    13
-   ]
-  },
-  {
-   "business_type": "Services",
-   "cluster": "Spain & Portugal",
-   "flags": [
-    "ES"
-   ],
-   "values": [
-    10,
-    0,
-    0
-   ]
-  }
- ],
  "site_gaps": {
   "ES-VIT": {
+   "page": 7,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -678,23 +10,19 @@
      "bullets": [
       {
        "text": "Business opening license: classified activity license or equivalent environmental authorization not yet obtained",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Explosive atmosphere zones ATEX: explosive atmosphere risk assessment considering ignition probability and zone classification not completed",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Contractor management: several documents are missing, especially: 1) Operational CAE platform; 2) Verified contractor OHS documentation (risk assessment, planning, training, medical fitness, insurance) 3) Work-permit control procedure.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Loading gate: several documents are missing, especially: 1) Certificate of the loading-gate safety devices; 2) Six-monthly maintenance records by an authorized company; 3) Result of the functional verification, 4) Preventive maintenance plan for all loading gates; 5) Dated and signed intervention records by an authorized company.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -703,25 +31,24 @@
      "bullets": [
       {
        "text": "Loading and unloading: several documents are missing, especially: 1) training record for packing/unpacking jobs, 2) CE marking and declarations of conformity of packing equipment (strapping, winding, wrapping machines), 3) Equipment inventory with guard status; 4) Manuals accessible at the workstation.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Technical installation: 1) low-voltage and high-voltage electrical installation certification and periodic inspection missing, 2) inventory of pressure equipment",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Machinery compliance: machinery must 1) carry CE marking, 2) declaration of conformity, 3) regular OCA inspections, 4) maintenance records",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 7"
+   "footnote": ""
   },
   "ES-SEV": {
+   "page": 9,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -729,23 +56,19 @@
      "bullets": [
       {
        "text": "Lifting equipment use: Missing: 1) a documented safe lifting and suspended-load handling procedure, including controls to prevent personnel from passing beneath suspended loads, and 2) documented monthly racking inspection records and a procedure for the immediate removal or isolation of damaged rack bays.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Loading gate: Missing: 1) a documented maintenance plan for manual loading doors and 2) a loading/unloading procedure requiring the use of wheel chocks, including compliance monitoring records.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Falling objects: Missing: 1) documented monthly racking inspection records, 2) a procedure for the immediate withdrawal and repair of damaged rack bays, 3) documented pre-use inspection records for lifting hooks and safety brakes, 4) an up-to-date lifting accessories inventory with a defective-equipment disposal procedure and records, and 5) training records on safe palletizing and material storage to prevent falling-object hazards.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Contractor management: Missing: 1) a documented contractor management and verification procedure, 2) records of contractor compliance checks through the CAE platform, 3) on-site contractor supervision and inspection records, and 4) evidence that contractors meet all applicable legal and site-specific safety requirements before and during work execution.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -754,15 +77,16 @@
      "bullets": [
       {
        "text": "Loading/unloading: Missing: 1) an updated manual material handling (MMH) risk assessment with a documented action plan, and 2) records of periodic verification of machinery safeguards and mandatory PPE use during loading/unloading operations.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 9"
+   "footnote": ""
   },
   "ES-MEC": {
+   "page": 10,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -770,23 +94,19 @@
      "bullets": [
       {
        "text": "Manual handling: Missing: 1) manual handling risk assessment using a recognized methodology, 2) assessment of high-risk lithium battery handling tasks, and 3) occupational health surveillance records demonstrating investigation, follow-up, and corrective actions related to reported musculoskeletal complaints.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Machinery guarding: Missing: 1) evidence that maintenance contractors have documented LOTO procedures for machinery and industrial doors, 2) verification that these procedures are implemented during maintenance activities, and 3) contractor competence/training records related to hazardous energy control and entrapment prevention.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Contractor management: Missing:1) a formal contractor induction/work authorization process covering task and site-specific risk review, required PPE, and equipment/tools verification, 2) documented communication to affected site personnel regarding contractor activities, 3) identification of situations requiring preventive resources or special controls (e.g., ATEX areas), and 4) records demonstrating contractor compliance with these requirements during work execution.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Loading and unloading: Missing: 1) documented controls to prevent trailer movement during loading/unloading (preferably a mechanical restraint system), 2) inspection records confirming correct wheel chock use (quantity, size, and positioning), 3) a formal vehicle key control procedure during loading/unloading operations, and 4) evidence of implementation and monitoring of these controls following previous incidents/near misses.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -795,15 +115,16 @@
      "bullets": [
       {
        "text": "Fire safety: 1) justification for exemption from a Fire Safety Self-Protection Plan and 2) fire emergency training records for designated personnel are needed.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 10"
+   "footnote": ""
   },
   "ES-VAL": {
+   "page": 11,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -811,13 +132,11 @@
      "bullets": [
       {
        "text": "Fire Risk: Missing: 1) Intrinsic fire-risk level not determined (fire-load calculation per RSCIEI Annex I missing); OCA inspection frequency and Self-Protection Plan requirement unknown. 2) Self-Protection Plan not elaborated, implemented or registered with the Generalitat Valenciana despite likely obligation given warehouse size",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Contractor management : Missing: 1) No effective CAE control ; neither via platform nor on-site; area team unaware of contractors/subcontractors working in their zone. 2) No written risk-information delivery with signed acknowledgement per contractor before work commences. 3) No work-authorisation process covering task-specific risk review, PPE verification, and equipment/tools check per contractor intervention. 4) No documented communication to site personnel about contractor activities.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -826,15 +145,16 @@
      "bullets": [
       {
        "text": "Fire Risk: Missing: 1) intrinsic fire-risk level calculation (fire-load per RSCIEI Annex I) ; required to determine OCA inspection frequency and whether a Self-Protection Plan is mandatory, 2) OCA corrective-action status from 2025 inspection not yet documented, 3) evacuation routes partially obstructed and emergency-lighting test records absent.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 11"
+   "footnote": ""
   },
   "ES-AND": {
+   "page": 12,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -842,30 +162,28 @@
      "bullets": [
       {
        "text": "Loading gates: Missing: 1) loading gate safety certification and anti-entrapment device inspection records, 2) a preventive maintenance plan and maintenance/intervention records for loading doors, 3) a documented dock operation procedure, including wheel chock management and bay occupancy controls, and 4) evidence of fall protection measures at loading docks.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Explosive atmosphere zones: Missing: 1) an ATEX risk assessment and Explosion Protection Document (EPD/DPCE), 2) an ATEX zone classification plan prepared by a competent person, 3) ATEX training records and a list of authorized personnel by zone, 4) certified antistatic PPE documentation and issuance records, and 5) an ATEX work permit system and designation of preventive resources where required.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Contractor management: Missing: 1) documented CAE coordination and information exchange with all contractors and concurrent employers, 2) systematic contractor document verification records (e.g., through a CAE platform), 3) written designation of preventive resources for high-risk activities, and 4) a work permit system for contractors performing high-risk work.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Hazardous substances inventory: Missing: 1) a complete chemical inventory with verified and accessible Safety Data Sheets (SDSs), 2) a chemical exposure assessment and industrial hygiene monitoring reports, 3) an inventory of carcinogenic/mutagenic agents and individual exposure records, 4) ventilation verification/certification records for chemical handling areas, and 5) hazardous waste management records, including waste registers, acceptance forms, and contracts with authorized waste contractors.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 12"
+   "footnote": ""
   },
   "ES-BUR": {
+   "page": 13,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -873,8 +191,7 @@
      "bullets": [
       {
        "text": "Loading and unloading: Missing: 1) a loading/unloading risk assessment covering forklift and overhead crane operations, including poorly secured loads, and 2) a documented preventive action plan addressing the risks and improvement opportunities identified in the assessment.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -883,20 +200,20 @@
      "bullets": [
       {
        "text": "Load at height: Missing: 1) a storage and racking risk assessment in accordance with RD 486/1997 and applicable technical guidance (NTPs), and 2) a documented storage allocation procedure defining the permitted rack locations based on transformer weight and rack load capacity, with resulting actions incorporated into the preventive action plan.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Industrial vehicles: Missing: 1) a risk assessment for forklifts and pallet trucks, including traffic routes and operating surface conditions, 2) CE compliance documentation, instruction manuals, maintenance plans and inspection records, 3) operator training and training records, and 4) evidence of effective implementation and follow-up of pre-use forklift inspection checklists.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 13"
+   "footnote": ""
   },
   "ES-ACO": {
+   "page": 14,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -904,15 +221,16 @@
      "bullets": [
       {
        "text": "Explosive atmosphere zone verification: verification of the client's explosive atmosphere zone classification document prior to worker deployment is missing.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 14"
+   "footnote": ""
   },
   "ES-MAD": {
+   "page": 15,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -920,15 +238,16 @@
      "bullets": [
       {
        "text": "Electrical installation: Missing: 1) the current REBT Electrical Installation Certificate (Boletín), including any certificates issued following substantial modifications",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 15"
+   "footnote": ""
   },
   "PT-AVE": {
+   "page": 16,
+   "deck": "Spain_Portugal",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -936,30 +255,28 @@
      "bullets": [
       {
        "text": "Health & safety training: specific occupational health and safety training tailored to the role and identified risks not conducted or formally documented",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Evacuation and exit signage: exit signs and evacuation route markings not fully in place or not compliant with requirements",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Emergency plan: internal emergency plan not fully developed or not formally approved",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "First aid provision: adequate first aid equipment and trained personnel not fully ensured relative to workforce size and identified risks",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Spain & Portugal cluster presentation, slide 16"
+   "footnote": ""
   },
   "MX-MTY": {
+   "page": 7,
+   "deck": "Mexico_Colombia",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -967,36 +284,32 @@
      "bullets": [
       {
        "text": "Emergency drill records: date, scenario, participants, evacuation time, findings, and corrective actions",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Contractor management: risk information delivered to contractors is missing with signed acknowledgment, pre-qualification checklist, HSE contract clause, signed induction records prior to first access, work permit model and logs.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Forklift and equipment: defect and repair records",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Fire risk and prevention: assessment, calculation evidence, mandatory controls determination, corrective action records, and last review date",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Evacuation routes and emergency lighting: evacuation route plan, monthly inspection records of routes and signage, and emergency lighting test records",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Mexico & Colombia cluster presentation, slide 7",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "MX-INO": {
+   "page": 9,
+   "deck": "Mexico_Colombia",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -1004,132 +317,24 @@
      "bullets": [
       {
        "text": "Contractor evaluation: pre-qualification records per subcontractor, signed H&s obligations in subcontracts, and monthly H&S performance supervision evidence",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Site access control and registers are missing",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Incident reporting: reporting procedure, investigation reports, lessons learned communications, and corrective action records with closure dates",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Mexico & Colombia cluster presentation, slide 9",
-   "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
-  },
-  "MX-IBE": {
-   "panel_title": "Key Compliance Gaps",
-   "groups": [
-    {
-     "heading": "IBERDROLA (Warehouse)",
-     "bullets": [
-      {
-       "text": "Risk assessments documentation for crane and forklift activities and critical operations records",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Hazardous materials training of employees",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Fire risk classification and control",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "HSE contract annexes are missing",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "DC-3s for crane, forklift, and critical operators; equipment certifications and periodic inspection records",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Approved load limits, racking types, lifting and load risk assessments, site layout, risk maps, and area demarcation",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Traffic signage, safe pedestrian walkways, loose load securing, and operational procedures",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Labeling on chemical containers, safe lubricant storage, and proper grounding in chemical storage area",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Emergency response plan aligned with Iberdrola's, brigade training, fire suppression system reviews and drill planning",
-       "mark": "",
-       "sub": []
-      }
-     ]
-    }
-   ],
-   "source": "Mexico & Colombia cluster presentation, slide 10",
-   "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
-  },
-  "MX-SCH": {
-   "panel_title": "Key Compliance Gaps",
-   "groups": [
-    {
-     "heading": "SCHNEIDER (General services)",
-     "bullets": [
-      {
-       "text": "Risk assessment documentation and records",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Training program evidence and DC-3s where applicable",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Worker awareness records for risk assessments, site layout, risk zone maps, hazmat and critical operations training, and area demarcation verification",
-       "mark": "",
-       "sub": []
-      }
-     ]
-    }
-   ],
-   "source": "Mexico & Colombia cluster presentation, slide 10",
-   "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
-  },
-  "MX-BRA": {
-   "panel_title": "Key Compliance Gaps",
-   "groups": [
-    {
-     "heading": "BRASKEM (Warehouse)",
-     "bullets": [
-      {
-       "text": "Hazmat safety information for temporary materials on site",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Risk assessments and critical operations records maintained since start of operations, and flammable materials storage risk evaluation",
-       "mark": "",
-       "sub": []
-      }
-     ]
-    }
-   ],
-   "source": "Mexico & Colombia cluster presentation, slide 10",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "MX-SERVICES": {
+   "page": 10,
+   "deck": "Mexico_Colombia",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -1137,48 +342,39 @@
      "bullets": [
       {
        "text": "Risk assessments documentation for crane and forklift activities and critical operations records",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Hazardous materials training of employees",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Fire risk classification and control",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "HSE contract annexes are missing",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "DC-3s for crane, forklift, and critical operators; equipment certifications and periodic inspection records",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Approved load limits, racking types, lifting and load risk assessments, site layout, risk maps, and area demarcation",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Traffic signage, safe pedestrian walkways, loose load securing, and operational procedures",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Labeling on chemical containers, safe lubricant storage, and proper grounding in chemical storage area",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Emergency response plan aligned with Iberdrola's, brigade training, fire suppression system reviews and drill planning",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -1187,18 +383,15 @@
      "bullets": [
       {
        "text": "Risk assessment documentation and records",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Training program evidence and DC-3s where applicable",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Worker awareness records for risk assessments, site layout, risk zone maps, hazmat and critical operations training, and area demarcation verification",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -1207,21 +400,20 @@
      "bullets": [
       {
        "text": "Hazmat safety information for temporary materials on site",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Risk assessments and critical operations records maintained since start of operations, and flammable materials storage risk evaluation",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Mexico & Colombia cluster presentation, slide 10",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "MX-CDMX": {
+   "page": 11,
+   "deck": "Mexico_Colombia",
    "panel_title": "Key Compliance Gaps",
    "groups": [
     {
@@ -1229,18 +421,15 @@
      "bullets": [
       {
        "text": "Evacuation drills: pending joint evacuation drill evidence with rest of building occupants",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Emergency routes: missing safety signs on emergency routes",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Electrical installations: live electrical risks, power strips pending approval, loose cables in corridor, microwave wiring pending load verification",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -1249,26 +438,24 @@
      "bullets": [
       {
        "text": "SST documentary control index + sample of retained documents with dates and signature",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Contractors & visitors: missing security induction at entry",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Emergency brigades: missing evidence of brigade integration with the building",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Mexico & Colombia cluster presentation, slide 11",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "CO-HOM": {
+   "page": 12,
+   "deck": "Mexico_Colombia",
    "panel_title": "Key Compliance Gaps*",
    "groups": [
     {
@@ -1276,13 +463,11 @@
      "bullets": [
       {
        "text": "Accident reporting and ARL: home accident reporting procedure and ARL affiliation certificates for all Colombian workers",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Workplace Coexistence Committee (CCL): constitution act, worker communication, and accessible reporting channel for remote workers",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -1291,26 +476,24 @@
      "bullets": [
       {
        "text": "Home office risk information: risk disclosure document and signed acknowledgment records for all Colombian workers",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Psychosocial risk: assessment not applied, missing results, and intervention plan",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Home emergency protocol: procedure, signed acknowledgments, and emergency directory",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Mexico & Colombia cluster presentation, slide 12",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "CO-EPC": {
+   "page": 13,
+   "deck": "Mexico_Colombia",
    "panel_title": "Key Compliance Gaps*",
    "groups": [
     {
@@ -1318,60 +501,53 @@
      "bullets": [
       {
        "text": "Contractor management: HSE Coordinator credentials, meeting minutes, HSE inspections, corrective action plans, activity suspension records, signed induction records, and solar site-specific induction content.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Lifting equipment: plans, operator competency certificates, pre-operational and technical inspection records, certificates (crane, hoist, slings).",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Working at height: fall prevention program, valid certificates (max. 3 years) for all workers including contractors, PTWs, coordinator certification and appointment, height PPE, anchor point certificates and inspections.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Electrical workers: valid licenses, CONTE verification(National Council of Electrical Technicians), authorized worker list, and defined roles per technician.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "LOTO: photovoltaic procedure (DC/AC), application records, calibrated voltage verification equipment, and training records.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Dual-risk activities (electrical + height): safe work procedures, dielectric and fall arrest PPE compatibility verification, and CTTA/RETIE dual authorization.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "Mexico & Colombia cluster presentation, slide 13",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "FR-OFF": {
+   "page": 7,
+   "deck": "France",
    "panel_title": "Key Compliance Findings: Villeurbanne office*",
+   "panel_subtitle": "Missing documents",
    "groups": [
     {
      "heading": "High Critical Compliance gaps in Office:",
      "bullets": [
       {
        "text": "Single Document for Occupational Risk Assessment (DUERP)",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Fire equipment certification, evacuation marshal designation, posted safety/evacuation instructions",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Defibrillator presence and validity check",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -1380,60 +556,53 @@
      "bullets": [
       {
        "text": "A documented psychosocial risk assessment covering office-related psychosocial hazards.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "A psychosocial action plan, including corrective actions, responsibilities, deadlines, and employee training (including harassment awareness).",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "A formalized emergency plan that is communicated to all employees.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Up-to-date emergency preparedness, including trained first aid personnel (SST), current emergency procedures, and valid SST cards.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "France cluster presentation, slide 7",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "FR-EPC": {
+   "page": 9,
+   "deck": "France",
    "panel_title": "Key Compliance Findings: EPC Activity",
+   "panel_subtitle": "Missing documents of high criticality",
    "groups": [
     {
      "heading": "High Critical Compliance gaps in EPC Project:",
      "bullets": [
       {
        "text": "Service contract",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Prevention plan including a risk analysis review at project launch",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Safety Data Sheet (SDS)",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Insurance contract",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Formalized emergency plan and emergency measures",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     },
@@ -1442,31 +611,28 @@
      "bullets": [
       {
        "text": "Valid tax and URSSAF compliance certificates for all subcontractors.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Evidence of workers' qualifications, certifications, and authorizations (e.g., CACES, electrical authorization, SST).",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Records verifying the availability and adequacy of PPE and collective protective equipment throughout the project.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       },
       {
        "text": "Valid insurance certificates for all subcontractors.",
-       "mark": "",
-       "sub": []
+       "mark": ""
       }
      ]
     }
    ],
-   "source": "France cluster presentation, slide 9",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "GR-ATH": {
+   "page": 7,
+   "deck": "Greece_Italy",
    "panel_title": "Key Compliance Gap*",
    "groups": [
     {
@@ -1474,18 +640,15 @@
      "bullets": [
       {
        "text": "Risk assessment document of the office",
-       "mark": "✗",
-       "sub": []
+       "mark": "✗"
       },
       {
        "text": "Training & Drills: Evacuation drill log and Training log and certificates of employees",
-       "mark": "✗",
-       "sub": []
+       "mark": "✗"
       },
       {
        "text": "Safety Technician assignment and related documents (Safety Technician suggestions, Records of submitted SEPE notifications, Accident logbook)",
-       "mark": "✗",
-       "sub": []
+       "mark": "✗"
       }
      ]
     },
@@ -1494,31 +657,28 @@
      "bullets": [
       {
        "text": "Fire safety: documented fire study and responsible person designated,",
-       "mark": "✗",
-       "sub": []
+       "mark": "✗"
       },
       {
        "text": "Internal accidents logbook",
-       "mark": "✗",
-       "sub": []
+       "mark": "✗"
       },
       {
        "text": "Signed OSH policy document",
-       "mark": "~",
-       "sub": []
+       "mark": "~"
       },
       {
        "text": "Written telework agreements per employee",
-       "mark": "✗",
-       "sub": []
+       "mark": "✗"
       }
      ]
     }
    ],
-   "source": "Greece & Italy cluster presentation, slide 7",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   },
   "IT-BUC": {
+   "page": 9,
+   "deck": "Greece_Italy",
    "panel_title": "Key Compliance Gaps*",
    "groups": [
     {
@@ -1526,13 +686,11 @@
      "bullets": [
       {
        "text": "Mandatory periodic inspection of the grounding (earthing) system",
-       "mark": "~",
-       "sub": []
+       "mark": "~"
       },
       {
        "text": "Supervisor (preposto) safety training to 12 hours as required",
-       "mark": "~",
-       "sub": []
+       "mark": "~"
       }
      ]
     },
@@ -1541,23 +699,19 @@
      "bullets": [
       {
        "text": "Six-monthly extinguisher maintenance records",
-       "mark": "~",
-       "sub": []
+       "mark": "~"
       },
       {
        "text": "Emergency numbers posted as standalone visible notice and first aid kit complete and compliant",
-       "mark": "~",
-       "sub": []
+       "mark": "~"
       },
       {
        "text": "Legionella risk assessment (Circular Min. Health 2015 / ISS Guidelines 2015) + water system control and maintenance plan + sampling records (if applicable)",
-       "mark": "✗",
-       "sub": []
+       "mark": "✗"
       }
      ]
     }
    ],
-   "source": "Greece & Italy cluster presentation, slide 9",
    "footnote": "*Further detail on the legal requirements is presented in an excel checklist"
   }
  },
@@ -1571,83 +725,31 @@
     {
      "heading": "High Critical Compliance gaps in Warehouse:",
      "bullets": [
-      {
-       "text": "Contractor management is the most pervasive weakness, with non-conformities at every site except Burgos. Common gaps include the absence of a formal contractor verification and work-authorization process, ineffective use of the CAE platform, insufficient on-site supervision, and a lack of documented communication to site personnel regarding contractor activities and special-control areas.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Loading and unloading operations show consistent gaps across Sevilla, Meco, Andoain and Burgos, principally around trailer/wheel restraint controls, dock maintenance and operation procedures, and supporting risk assessments.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Storage and falling-object controls (racking inspections and damaged-bay removal procedures) are deficient at Sevilla, and manual handling and machinery safety gaps, including lithium-battery handling, health surveillance and contractor LOTO procedures, are concentrated at Meco.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Fire safety represents a high-priority regulatory exposure at Valencia, where the intrinsic fire-risk level has not been determined and the legally required Self-Protection Plan has not been prepared or registered.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Hazardous-substances management at Andoain lacks a complete chemical inventory, exposure and hygiene monitoring, carcinogen/mutagen controls, ventilation certification and waste-management records.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "ATEX (explosive atmosphere) management is a significant concern at Andoain, where risk assessments, Explosion Protection Documents (EPD/DPCE), zone classification, training, authorized-personnel lists and certified PPE documentation are incomplete or missing.",
-       "mark": "",
-       "sub": []
-      }
+      "Contractor management is the most pervasive weakness, with non-conformities at every site except Burgos. Common gaps include the absence of a formal contractor verification and work-authorization process, ineffective use of the CAE platform, insufficient on-site supervision, and a lack of documented communication to site personnel regarding contractor activities and special-control areas.",
+      "Loading and unloading operations show consistent gaps across Sevilla, Meco, Andoain and Burgos, principally around trailer/wheel restraint controls, dock maintenance and operation procedures, and supporting risk assessments.",
+      "Storage and falling-object controls (racking inspections and damaged-bay removal procedures) are deficient at Sevilla, and manual handling and machinery safety gaps, including lithium-battery handling, health surveillance and contractor LOTO procedures, are concentrated at Meco.",
+      "Fire safety represents a high-priority regulatory exposure at Valencia, where the intrinsic fire-risk level has not been determined and the legally required Self-Protection Plan has not been prepared or registered.",
+      "Hazardous-substances management at Andoain lacks a complete chemical inventory, exposure and hygiene monitoring, carcinogen/mutagen controls, ventilation certification and waste-management records.",
+      "ATEX (explosive atmosphere) management is a significant concern at Andoain, where risk assessments, Explosion Protection Documents (EPD/DPCE), zone classification, training, authorized-personnel lists and certified PPE documentation are incomplete or missing."
      ],
      "page": 14
     },
     {
      "heading": "High Critical Compliance gaps in Factory:",
      "bullets": [
-      {
-       "text": "ATEX zones: explosive atmosphere risk assessment (ignition probability and zone classification) not completed.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Contractor management: missing operational CAE platform, verified contractor OHS documentation (risk assessment, planning, training, medical fitness, insurance), and a work-permit control procedure.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Loading gate: missing safety-device certificate, six-monthly maintenance records by an authorized company, functional verification results, preventive maintenance plan for all gates, and dated/signed intervention records by an authorized company.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Loading and unloading: missing training records for packing/unpacking jobs, CE marking and declarations of conformity for packing equipment (strapping, winding, wrapping machines), equipment inventory with guard status, and manuals accessible at the workstation.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Technical installation: missing low- and high-voltage electrical installation certification and periodic inspection, and a pressure-equipment inventory.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Machinery compliance: machinery missing CE marking, declaration of conformity, regular OCA inspections, and maintenance records.",
-       "mark": "",
-       "sub": []
-      }
+      "ATEX zones: explosive atmosphere risk assessment (ignition probability and zone classification) not completed.",
+      "Contractor management: missing operational CAE platform, verified contractor OHS documentation (risk assessment, planning, training, medical fitness, insurance), and a work-permit control procedure.",
+      "Loading gate: missing safety-device certificate, six-monthly maintenance records by an authorized company, functional verification results, preventive maintenance plan for all gates, and dated/signed intervention records by an authorized company.",
+      "Loading and unloading: missing training records for packing/unpacking jobs, CE marking and declarations of conformity for packing equipment (strapping, winding, wrapping machines), equipment inventory with guard status, and manuals accessible at the workstation.",
+      "Technical installation: missing low- and high-voltage electrical installation certification and periodic inspection, and a pressure-equipment inventory.",
+      "Machinery compliance: machinery missing CE marking, declaration of conformity, regular OCA inspections, and maintenance records."
      ],
      "page": 15
     },
     {
      "heading": "High Critical Compliance gaps in Offices:",
      "bullets": [
-      {
-       "text": "Office assessments found Aveiro lacking in emergency preparedness (emergency plan, evacuation signage, first aid) and role-specific OHS training, while Madrid's only gap is the missing current REBT Electrical Installation Certificate (Boletín).",
-       "mark": "",
-       "sub": []
-      }
+      "Office assessments found Aveiro lacking in emergency preparedness (emergency plan, evacuation signage, first aid) and role-specific OHS training, while Madrid's only gap is the missing current REBT Electrical Installation Certificate (Boletín)."
      ],
      "page": 15
     }
@@ -1662,11 +764,7 @@
     {
      "heading": "Owned Warehouse - High critical compliance gaps:",
      "bullets": [
-      {
-       "text": "A few items remain missing: emergency drill records, contractor management documents (risk acknowledgment, pre-qualification, HSE clause, inductions, work permits), and fire risk and prevention evidence.",
-       "mark": "",
-       "sub": []
-      }
+      "A few items remain missing: emergency drill records, contractor management documents (risk acknowledgment, pre-qualification, HSE clause, inductions, work permits), and fire risk and prevention evidence."
      ],
      "style": "paragraph",
      "page": 16
@@ -1674,16 +772,8 @@
     {
      "heading": "Services - High critical compliance gaps:",
      "bullets": [
-      {
-       "text": "The Braskem site (in-house warehouse) is missing the risk assessment documentation, including critical operations records maintained since the start of operations and the flammable materials storage risk evaluation.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "For the Schneider site (in-house general services), still-missing items include the proper risk assessment documentation and records, training program evidence and DC-3s where applicable, risk zone maps, hazmat and critical operations training, and area demarcation verification.",
-       "mark": "",
-       "sub": []
-      },
+      "The Braskem site (in-house warehouse) is missing the risk assessment documentation, including critical operations records maintained since the start of operations and the flammable materials storage risk evaluation.",
+      "For the Schneider site (in-house general services), still-missing items include the proper risk assessment documentation and records, training program evidence and DC-3s where applicable, risk zone maps, hazmat and critical operations training, and area demarcation verification.",
       {
        "text": "For the Iberdrola site (in-house warehouse), still-missing items include:",
        "sub": [
@@ -1692,8 +782,7 @@
         "Site organization: load limits, racking types, lifting/load risk assessments, site layout, risk maps, area demarcation, traffic signage, pedestrian walkways, load securing, and operational procedures.",
         "Chemical safety: container labeling, safe lubricant storage, and proper grounding.",
         "Fire & emergency: fire risk classification and control; emergency plan aligned with Iberdrola's, brigade training, fire suppression reviews, and drill planning."
-       ],
-       "mark": ""
+       ]
       }
      ],
      "page": 16
@@ -1701,19 +790,14 @@
     {
      "heading": "EPC - High critical compliance gaps:",
      "bullets": [
-      {
-       "text": "Mexico shows legal compliance gaps in 1) subcontracting HSE clauses, 2) access control, and 3) incident investigation.",
-       "mark": "",
-       "sub": []
-      },
+      "Mexico shows legal compliance gaps in 1) subcontracting HSE clauses, 2) access control, and 3) incident investigation.",
       {
        "text": "Colombia - several documents are missing:",
        "sub": [
         "Contractor management: HSE Coordinator credentials, meeting minutes, HSE inspections, corrective action plans, activity suspension records, signed induction records, and solar site-specific induction content.",
         "Lifting equipment: plans, operator competency certificates, pre-operational and technical inspection records, certificates (crane, hoist, slings).",
         "LOTO: photovoltaic procedure (DC/AC), application records, calibrated voltage verification equipment, and training records."
-       ],
-       "mark": ""
+       ]
       }
      ],
      "page": 17
@@ -1721,16 +805,8 @@
     {
      "heading": "Offices - High critical compliance gaps:",
      "bullets": [
-      {
-       "text": "In Colombia, the Labor Coexistence Committee (CCL) has not been established, and the notification of the home-based work arrangement to the ARL (occupational risk insurer) is missing.",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "In the CDMX office, pending items include joint evacuation drill evidence with other building occupants, missing safety signage on emergency routes, and electrical issues (live risks, unapproved power strips, loose corridor cables, and pending microwave wiring load verification).",
-       "mark": "",
-       "sub": []
-      }
+      "In Colombia, the Labor Coexistence Committee (CCL) has not been established, and the notification of the home-based work arrangement to the ARL (occupational risk insurer) is missing.",
+      "In the CDMX office, pending items include joint evacuation drill evidence with other building occupants, missing safety signage on emergency routes, and electrical issues (live risks, unapproved power strips, loose corridor cables, and pending microwave wiring load verification)."
      ],
      "page": 17
     }
@@ -1744,52 +820,20 @@
     {
      "heading": "High Critical Compliance gaps in EPC:",
      "bullets": [
-      {
-       "text": "Service contract",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Prevention plan including a risk analysis review at project launch",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Safety Data Sheet (SDS)",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Insurance contract",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Formalized emergency plan and emergency measures",
-       "mark": "",
-       "sub": []
-      }
+      "Service contract",
+      "Prevention plan including a risk analysis review at project launch",
+      "Safety Data Sheet (SDS)",
+      "Insurance contract",
+      "Formalized emergency plan and emergency measures"
      ],
      "page": 18
     },
     {
      "heading": "High Critical Compliance gaps in Office:",
      "bullets": [
-      {
-       "text": "Single Document for Occupational Risk Assessment (DUERP)",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Fire equipment certification, evacuation marshal designation, posted safety/evacuation instructions",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Defibrillator presence and validity check",
-       "mark": "",
-       "sub": []
-      }
+      "Single Document for Occupational Risk Assessment (DUERP)",
+      "Fire equipment certification, evacuation marshal designation, posted safety/evacuation instructions",
+      "Defibrillator presence and validity check"
      ],
      "page": 18
     }
@@ -1803,37 +847,17 @@
     {
      "heading": "High Critical Compliance gaps in Greece:",
      "bullets": [
-      {
-       "text": "Risk assessment document of the office",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Training & Drills: Evacuation drill log and Training log and certificates of employees",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Safety Technician assignment and related documents (Safety Technician suggestions, Records of submitted SEPE notifications, Accident logbook)",
-       "mark": "",
-       "sub": []
-      }
+      "Risk assessment document of the office",
+      "Training & Drills: Evacuation drill log and Training log and certificates of employees",
+      "Safety Technician assignment and related documents (Safety Technician suggestions, Records of submitted SEPE notifications, Accident logbook)"
      ],
      "page": 19
     },
     {
      "heading": "High Critical Compliance gaps in Italy:",
      "bullets": [
-      {
-       "text": "Supervisor (preposto) safety training to 12 hours as legally required",
-       "mark": "",
-       "sub": []
-      },
-      {
-       "text": "Mandatory periodic inspection of the grounding (earthing) system",
-       "mark": "",
-       "sub": []
-      }
+      "Supervisor (preposto) safety training to 12 hours as legally required",
+      "Mandatory periodic inspection of the grounding (earthing) system"
      ],
      "page": 19
     }
@@ -1850,36 +874,12 @@
     "heading": "Warehouses",
     "sub": "Spain:",
     "bullets": [
-     {
-      "text": "Contractor management (all sites except Burgos): no formal verification/work-authorization process, ineffective CAE platform use, insufficient supervision, and poor communication to site personnel.",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "Loading and unloading (Sevilla, Meco, Andoain, Burgos): gaps in trailer/wheel restraints, dock procedures, and risk assessments.",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "Storage and manual handling: deficient racking inspections at Sevilla while manual handling and machinery gaps encountered at Meco (lithium-battery handling, health surveillance, contractor LOTO).",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "Fire safety (Valencia): fire-risk level not determined and Self-Protection Plan not prepared or registered.",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "Hazardous substances (Andoain): missing chemical inventory, exposure/hygiene monitoring, carcinogen controls, ventilation certification, and waste records.",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "ATEX (Andoain): incomplete risk assessments, Explosion Protection Documents (EPD/DPCE), zone classification, training, and certified PPE.",
-      "mark": "",
-      "sub": []
-     }
+     "Contractor management (all sites except Burgos): no formal verification/work-authorization process, ineffective CAE platform use, insufficient supervision, and poor communication to site personnel.",
+     "Loading and unloading (Sevilla, Meco, Andoain, Burgos): gaps in trailer/wheel restraints, dock procedures, and risk assessments.",
+     "Storage and manual handling: deficient racking inspections at Sevilla while manual handling and machinery gaps encountered at Meco (lithium-battery handling, health surveillance, contractor LOTO).",
+     "Fire safety (Valencia): fire-risk level not determined and Self-Protection Plan not prepared or registered.",
+     "Hazardous substances (Andoain): missing chemical inventory, exposure/hygiene monitoring, carcinogen controls, ventilation certification, and waste records.",
+     "ATEX (Andoain): incomplete risk assessments, Explosion Protection Documents (EPD/DPCE), zone classification, training, and certified PPE."
     ],
     "page": 12
    },
@@ -1887,11 +887,7 @@
     "heading": "Warehouses",
     "sub": "Mexico MTY:",
     "bullets": [
-     {
-      "text": "A few items remain missing: emergency drill records, contractor management documents (risk acknowledgment, pre-qualification, HSE clause, inductions, work permits), and fire risk and prevention evidence.",
-      "mark": "",
-      "sub": []
-     }
+     "A few items remain missing: emergency drill records, contractor management documents (risk acknowledgment, pre-qualification, HSE clause, inductions, work permits), and fire risk and prevention evidence."
     ],
     "style": "paragraph",
     "page": 12
@@ -1899,11 +895,7 @@
    {
     "heading": "EPC",
     "bullets": [
-     {
-      "text": "Mexico shows gaps in subcontracting HSE clauses, access control, and incident investigation whereas France lacks several key documents (service contract, prevention plan with launch risk analysis, Safety Data Sheets, insurance contract, formalized emergency plan), and Colombia has significant gaps in contractor management, lifting equipment, and LOTO documentation.",
-      "mark": "",
-      "sub": []
-     }
+     "Mexico shows gaps in subcontracting HSE clauses, access control, and incident investigation whereas France lacks several key documents (service contract, prevention plan with launch risk analysis, Safety Data Sheets, insurance contract, formalized emergency plan), and Colombia has significant gaps in contractor management, lifting equipment, and LOTO documentation."
     ],
     "page": 12,
     "sub": ""
@@ -1911,11 +903,7 @@
    {
     "heading": "Factory",
     "bullets": [
-     {
-      "text": "The Factory shows critical compliance gaps across ATEX zones, contractor management, the loading gate, loading and unloading operations, technical installations, and machinery compliance, spanning incomplete explosive atmosphere risk assessments, missing contractor verification and work-permit controls, absent gate and machinery certifications and inspections, and unavailable electrical and pressure-equipment documentation.",
-      "mark": "",
-      "sub": []
-     }
+     "The Factory shows critical compliance gaps across ATEX zones, contractor management, the loading gate, loading and unloading operations, technical installations, and machinery compliance, spanning incomplete explosive atmosphere risk assessments, missing contractor verification and work-permit controls, absent gate and machinery certifications and inspections, and unavailable electrical and pressure-equipment documentation."
     ],
     "style": "paragraph",
     "page": 13,
@@ -1924,16 +912,8 @@
    {
     "heading": "Services",
     "bullets": [
-     {
-      "text": "Mexico: All three in-house sites lack core documentation — Braskem (critical operations records since start-up and flammable storage evaluation), Schneider (risk assessments, training/DC-3s, risk zone maps, hazmat and critical-ops training, area demarcation), and Iberdrola (crane/forklift assessments, hazmat training, operator DC-3s and equipment certifications, site organization, chemical safety, and fire/emergency plans).",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "Spain: No critical compliance gaps were identified",
-      "mark": "",
-      "sub": []
-     }
+     "Mexico: All three in-house sites lack core documentation — Braskem (critical operations records since start-up and flammable storage evaluation), Schneider (risk assessments, training/DC-3s, risk zone maps, hazmat and critical-ops training, area demarcation), and Iberdrola (crane/forklift assessments, hazmat training, operator DC-3s and equipment certifications, site organization, chemical safety, and fire/emergency plans).",
+     "Spain: No critical compliance gaps were identified"
     ],
     "page": 13,
     "sub": ""
@@ -1941,21 +921,9 @@
    {
     "heading": "Offices",
     "bullets": [
-     {
-      "text": "France is missing its occupational risk assessment (DUERP), fire equipment certification, evacuation marshal designation, posted safety instructions, and defibrillator check;",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "Greece lacks its office risk assessment, training and evacuation drill records, and Safety Technician assignment documents.",
-      "mark": "",
-      "sub": []
-     },
-     {
-      "text": "Italy has gaps in the legally required supervisor (preposto) safety training and the mandatory grounding-system inspection.",
-      "mark": "",
-      "sub": []
-     }
+     "France is missing its occupational risk assessment (DUERP), fire equipment certification, evacuation marshal designation, posted safety instructions, and defibrillator check;",
+     "Greece lacks its office risk assessment, training and evacuation drill records, and Safety Technician assignment documents.",
+     "Italy has gaps in the legally required supervisor (preposto) safety training and the mandatory grounding-system inspection."
     ],
     "page": 13,
     "sub": ""
@@ -1991,46 +959,6 @@
    "Employee commitment to safety appears markedly stronger at client-operated warehouses than at Amara NZero's own facilities.",
    "H&S practices with contractors need strengthening across EPC and other activities - contracting process requires stronger initial risk assessment and resource planning"
   ]
- },
- "cluster_meta": {
-  "Spain & Portugal": {
-   "countries": [
-    "Spain",
-    "Portugal"
-   ],
-   "flags": [
-    "ES",
-    "PT"
-   ]
-  },
-  "Mexico & Colombia": {
-   "countries": [
-    "Mexico",
-    "Colombia"
-   ],
-   "flags": [
-    "MX",
-    "CO"
-   ]
-  },
-  "France": {
-   "countries": [
-    "France"
-   ],
-   "flags": [
-    "FR"
-   ]
-  },
-  "Greece & Italy": {
-   "countries": [
-    "Greece",
-    "Italy"
-   ],
-   "flags": [
-    "GR",
-    "IT"
-   ]
-  }
  },
  "cluster_summary": {
   "Spain & Portugal": {

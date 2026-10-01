@@ -123,13 +123,17 @@ for path, country, site_id, site, btype, lang in SITES:
     blanks, n = 0, 0
     for r in range(hdr_row + 1, ws.max_row + 1):
         rid = ws.cell(r, 1).value
-        if not rid or not str(rid).strip():
+        has_id = bool(rid and str(rid).strip())
+        # QA fix (v0.3): some checklists (Iberdrola, Braskem, Altamira) list assessed requirements with an empty
+        # ID cell. Keep any row that has content in the requirement columns, not only rows with an ID.
+        has_content = any(ws.cell(r, c).value not in (None, "") for c in range(2, 8))
+        if not has_id and not has_content:
             blanks += 1
             if blanks > 40: break
             continue
         blanks = 0
         rec = {"country": country, "cluster": CLUSTER[country], "site_id": site_id, "site": site,
-               "business_type": btype, "lang": lang, "row": r}
+               "business_type": btype, "lang": lang, "row": r, "id_missing": not has_id}
         for f, i in cmap.items():
             v = ws.cell(r, i + 1).value
             if hasattr(v, "strftime"): v = v.strftime("%Y-%m-%d")
@@ -138,9 +142,9 @@ for path, country, site_id, site, btype, lang in SITES:
         fill = st_cell.fill.fgColor.rgb if (st_cell is not None and st_cell.fill and st_cell.fill.fill_type and isinstance(st_cell.fill.fgColor.rgb, str)) else None
         rec["criticality_level"] = crit_norm(rec.get("criticality"))
         rec["status_level"] = status_norm(rec.get("status"), fill)
-        if not rec.get("status") and fill and rec["status_level"] != "Not assessed":
-            rec["status"] = {"Non-compliant": "Non conforme", "Partially compliant": "Partiellement conforme",
-                             "Compliant": "Conforme"}[rec["status_level"]] if lang == "fr" else rec["status_level"]
+        rec["status_from_colour"] = bool(not rec.get("status") and rec["status_level"] != "Not assessed")
+        # status read from the cell colour when the status cell is empty (France checklists, one Burgos row)
+        rec["status_source"] = "text" if rec.get("status") else ("cell colour" if rec["status_level"] != "Not assessed" else "empty")
         records.append(rec); n += 1
     print(f"{site_id:8s} {n:4d} rows  fields={sorted(cmap)}")
 

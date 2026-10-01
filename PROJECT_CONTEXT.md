@@ -221,3 +221,45 @@ Montserrat (Google Fonts, falls back offline). Stacked bars have a white 1.5px g
 - [ ] Optional: add the `01. Identification of legal requirements` PDF (Requisitos legales) content to tab ①.
 - [ ] Optional: Bradley Curve / safety-culture section (in the decks but out of scope so far).
 - [ ] Make the repo private (client-confidential data).
+
+---
+
+## v0.4 — Translation model and Excel datasets (owner tasks 1–2, Oct 2026)
+
+**Translate dropdown** (`lang_widget`): two options.
+- **Original**: everything in the language of the *region in focus*: the country of the site selected in Site
+  compliance (pages 2–4 and page 1), or, on page 1, the single country chosen in the register's Country filter.
+  Checklist rows and report findings are shown as written in their source documents; every English-authored text
+  (interface, deck insights, English report findings, report regulation labels, chart labels) is translated into
+  that language from `data/lang/<es|fr|it|pt>.json`. Greece = English (its documents are English).
+- **English**: everything in English (`data/translations_en.json` for checklist cells).
+- The note under the dropdown shows which language "Original" currently means.
+- Filters whose labels change with the language use per-language widget keys (`r_site_<lang>`, `ck_status_<lang>`,
+  …) because Streamlit stores multiselect selections as displayed labels. The page-1 country filter uses native
+  country names in Original mode (`r_country_Original`).
+- `core._MISSES` records every English string requested without a translation. Coverage check: run every site ×
+  page × mode with AppTest (fresh app per state) and confirm the only misses are source-language checklist text.
+  Result at v0.4: 0 untranslated English strings, 0 exceptions across 23 sites × 4 pages × 2 modes.
+
+**Excel datasets**
+- `exports/Amara_NZero_Legal_Compliance_Records.xlsx`: complete, unfiltered records. Page 1 requirements and page 2
+  assessed checklist for all countries, clusters and sites combined, plus report key activities and findings, each in
+  an Original and an English sheet, with status/criticality mappings and a site list.
+- `exports/Amara_NZero_Dashboard_Chart_Data.xlsx`: one sheet per dashboard chart (pages 1–4) with its data table,
+  SUM totals and a native Excel chart, plus QA reconciliation sheets.
+- Both are built by `exports.py` (also offered as in-app downloads); `python data_prep/export_excel.py` rewrites them.
+- `data/site_checklists/<SITE_ID>_<source file>.xlsx`: each working checklist with an identical English copy of
+  every sheet ("<sheet> (EN)") right after the original: same layout, merged cells, fills and widths. Greece is
+  copied unchanged (already English). Rebuild with
+  `python data_prep/build_site_workbooks.py <working-files folder> <Chetumal/Altamira folder>`;
+  `_build_report.json` lists any cell left untranslated (only one formula cell).
+
+**Data correction carried in this version**: MX-IBE, MX-BRA and MX-ALT checklists contain continuation rows without
+an ID; they are now included (17 → 30 records each; total 1,002 → 1,041). All other sites match their source row
+counts (`data/qa_results.json` → reconciliation_summary).
+
+**Page 2 layout**: the assessed checklist table now sits above the site-visit report findings (strengths, areas for
+improvement, quick wins, recommendations).
+
+**Next**: task 3: full QA/QC of source Excel ↔ dataset ↔ dashboard tables ↔ deck charts ↔ translations; task 5:
+final accuracy pass on site-visit report content.

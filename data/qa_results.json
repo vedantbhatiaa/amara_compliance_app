@@ -1,0 +1,1280 @@
+{
+ "reconciliation_summary": [
+  {
+   "site_id": "ES-MAD",
+   "file": "2026_06_Checklist_Oficina_Madrid.xlsx",
+   "source_rows_with_id": 31,
+   "dataset_rows": 31,
+   "row_count_match": true
+  },
+  {
+   "site_id": "ES-MEC",
+   "file": "2026_06_Checklist_Meco_Warehouse.xlsx",
+   "source_rows_with_id": 78,
+   "dataset_rows": 78,
+   "row_count_match": true
+  },
+  {
+   "site_id": "ES-SEV",
+   "file": "2026_06_Checklist_Sevilla_Warehouse.xlsx",
+   "source_rows_with_id": 78,
+   "dataset_rows": 78,
+   "row_count_match": true
+  },
+  {
+   "site_id": "ES-VAL",
+   "file": "2026_06_Checklist_Valencia_Warehouse.xlsx",
+   "source_rows_with_id": 78,
+   "dataset_rows": 78,
+   "row_count_match": true
+  },
+  {
+   "site_id": "ES-AND",
+   "file": "2026_06_Checklist_Andoain_Warehouse.xlsx",
+   "source_rows_with_id": 58,
+   "dataset_rows": 58,
+   "row_count_match": true
+  },
+  {
+   "site_id": "ES-BUR",
+   "file": "2026_06_Checklist_Burgos_Warehouse.xlsx",
+   "source_rows_with_id": 72,
+   "dataset_rows": 72,
+   "row_count_match": true
+  },
+  {
+   "site_id": "ES-VIT",
+   "file": "2026-06_Checklist_ES_Planta_Industrial_Vitoria.xlsx",
+   "source_rows_with_id": 81,
+   "dataset_rows": 81,
+   "row_count_match": true
+  },
+  {
+   "site_id": "ES-ACO",
+   "file": "2026-06_Checklist_ACoruna_Amara_NZero_Repsol_Requisitos_legales.xlsx",
+   "source_rows_with_id": 11,
+   "dataset_rows": 11,
+   "row_count_match": true
+  },
+  {
+   "site_id": "PT-AVE",
+   "file": "2026_06_Amara_NZero_Office_Aveiro_Checklist.xlsx",
+   "source_rows_with_id": 45,
+   "dataset_rows": 45,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-MTY",
+   "file": "2026_06_Checklist_MX_Almacen_Monterrey.xlsx",
+   "source_rows_with_id": 81,
+   "dataset_rows": 81,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-CDMX",
+   "file": "2026_06_Checklist_Oficina_CDMX_Mexico.xlsx",
+   "source_rows_with_id": 47,
+   "dataset_rows": 47,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-INO",
+   "file": "2026_06_Site_Visit_Report_EPC_INOAC.xlsx",
+   "source_rows_with_id": 38,
+   "dataset_rows": 38,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-IBE",
+   "file": "2026_06_Checklist_Almacen_Cliente_Mexico_Iberdrola.xlsx",
+   "source_rows_with_id": 17,
+   "dataset_rows": 17,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-BRA",
+   "file": "2026_06_Checklist_Almacen_Cliente Braskem_Mexico.xlsx",
+   "source_rows_with_id": 17,
+   "dataset_rows": 17,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-SCH",
+   "file": "2026_06_Site_Visit_Report_Schneider_Servicios_generales_Monterrey.xlsx",
+   "source_rows_with_id": 25,
+   "dataset_rows": 25,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-CHE",
+   "file": "2026_06_Site_Visit_Report_Chetumal_Servicios_generales.xlsx",
+   "source_rows_with_id": 25,
+   "dataset_rows": 25,
+   "row_count_match": true
+  },
+  {
+   "site_id": "MX-ALT",
+   "file": "2026_06_Checklist_Almacen y servicios_Cliente_Mexico_Altamira_Quantum.xlsx",
+   "source_rows_with_id": 17,
+   "dataset_rows": 17,
+   "row_count_match": true
+  },
+  {
+   "site_id": "CO-HOM",
+   "file": "2026_06_Checklist_Colombia_Teletrabajo.xlsx",
+   "source_rows_with_id": 21,
+   "dataset_rows": 21,
+   "row_count_match": true
+  },
+  {
+   "site_id": "CO-EPC",
+   "file": "2026_06_Colombia_EPC_Solar_Checklist_AmaraNZero.xlsx",
+   "source_rows_with_id": 49,
+   "dataset_rows": 49,
+   "row_count_match": true
+  },
+  {
+   "site_id": "FR-OFF",
+   "file": "2026_06_Checklist_Amara_NZero_France_Office_FR.xlsx",
+   "source_rows_with_id": 30,
+   "dataset_rows": 30,
+   "row_count_match": true
+  },
+  {
+   "site_id": "FR-EPC",
+   "file": "2026_06_Checklist_Amara_NZero_France_EPC.xlsx",
+   "source_rows_with_id": 31,
+   "dataset_rows": 31,
+   "row_count_match": true
+  },
+  {
+   "site_id": "GR-ATH",
+   "file": "2026_06_Amara_NZero_Checklist_Greece.xlsx",
+   "source_rows_with_id": 28,
+   "dataset_rows": 28,
+   "row_count_match": true
+  },
+  {
+   "site_id": "IT-BUC",
+   "file": "2026_06_Checklist_IT_Office_Buccinasco.xlsx",
+   "source_rows_with_id": 44,
+   "dataset_rows": 44,
+   "row_count_match": true
+  }
+ ],
+ "cell_mismatches": 0,
+ "deck_vs_checklist": [
+  {
+   "scope": "site",
+   "id": "ES-VIT",
+   "criticality": "High",
+   "deck": [
+    2,
+    15,
+    9
+   ],
+   "checklist": [
+    2,
+    14,
+    14
+   ],
+   "match": false,
+   "deck_total": 26,
+   "checklist_total": 30
+  },
+  {
+   "scope": "site",
+   "id": "ES-VIT",
+   "criticality": "Medium",
+   "deck": [
+    1,
+    16,
+    1
+   ],
+   "checklist": [
+    1,
+    18,
+    16
+   ],
+   "match": false,
+   "deck_total": 18,
+   "checklist_total": 35
+  },
+  {
+   "scope": "site",
+   "id": "ES-VIT",
+   "criticality": "Low",
+   "deck": [
+    0,
+    1,
+    1
+   ],
+   "checklist": [
+    0,
+    1,
+    1
+   ],
+   "match": true,
+   "deck_total": 2,
+   "checklist_total": 2
+  },
+  {
+   "scope": "site",
+   "id": "ES-SEV",
+   "criticality": "High",
+   "deck": [
+    20,
+    8,
+    7
+   ],
+   "checklist": [
+    20,
+    7,
+    8
+   ],
+   "match": false,
+   "deck_total": 35,
+   "checklist_total": 35
+  },
+  {
+   "scope": "site",
+   "id": "ES-SEV",
+   "criticality": "Medium",
+   "deck": [
+    4,
+    11,
+    4
+   ],
+   "checklist": [
+    4,
+    11,
+    4
+   ],
+   "match": true,
+   "deck_total": 19,
+   "checklist_total": 19
+  },
+  {
+   "scope": "site",
+   "id": "ES-SEV",
+   "criticality": "Low",
+   "deck": [
+    0,
+    0,
+    0
+   ],
+   "checklist": [
+    0,
+    0,
+    0
+   ],
+   "match": true,
+   "deck_total": 0,
+   "checklist_total": 0
+  },
+  {
+   "scope": "site",
+   "id": "ES-MEC",
+   "criticality": "High",
+   "deck": [
+    16,
+    2,
+    14
+   ],
+   "checklist": [
+    16,
+    7,
+    15
+   ],
+   "match": false,
+   "deck_total": 32,
+   "checklist_total": 38
+  },
+  {
+   "scope": "site",
+   "id": "ES-MEC",
+   "criticality": "Medium",
+   "deck": [
+    8,
+    11,
+    7
+   ],
+   "checklist": [
+    8,
+    11,
+    7
+   ],
+   "match": true,
+   "deck_total": 26,
+   "checklist_total": 26
+  },
+  {
+   "scope": "site",
+   "id": "ES-MEC",
+   "criticality": "Low",
+   "deck": [
+    0,
+    1,
+    4
+   ],
+   "checklist": [
+    0,
+    1,
+    4
+   ],
+   "match": true,
+   "deck_total": 5,
+   "checklist_total": 5
+  },
+  {
+   "scope": "site",
+   "id": "ES-VAL",
+   "criticality": "High",
+   "deck": [
+    16,
+    3,
+    6
+   ],
+   "checklist": [
+    16,
+    10,
+    6
+   ],
+   "match": false,
+   "deck_total": 25,
+   "checklist_total": 32
+  },
+  {
+   "scope": "site",
+   "id": "ES-VAL",
+   "criticality": "Medium",
+   "deck": [
+    8,
+    16,
+    3
+   ],
+   "checklist": [
+    4,
+    16,
+    2
+   ],
+   "match": false,
+   "deck_total": 27,
+   "checklist_total": 22
+  },
+  {
+   "scope": "site",
+   "id": "ES-VAL",
+   "criticality": "Low",
+   "deck": [
+    1,
+    9,
+    0
+   ],
+   "checklist": [
+    1,
+    2,
+    0
+   ],
+   "match": false,
+   "deck_total": 10,
+   "checklist_total": 3
+  },
+  {
+   "scope": "site",
+   "id": "ES-AND",
+   "criticality": "High",
+   "deck": [
+    1,
+    16,
+    4
+   ],
+   "checklist": [
+    1,
+    4,
+    16
+   ],
+   "match": false,
+   "deck_total": 21,
+   "checklist_total": 21
+  },
+  {
+   "scope": "site",
+   "id": "ES-AND",
+   "criticality": "Medium",
+   "deck": [
+    1,
+    8,
+    15
+   ],
+   "checklist": [
+    1,
+    8,
+    15
+   ],
+   "match": true,
+   "deck_total": 24,
+   "checklist_total": 24
+  },
+  {
+   "scope": "site",
+   "id": "ES-AND",
+   "criticality": "Low",
+   "deck": [
+    0,
+    1,
+    3
+   ],
+   "checklist": [
+    0,
+    1,
+    3
+   ],
+   "match": true,
+   "deck_total": 4,
+   "checklist_total": 4
+  },
+  {
+   "scope": "site",
+   "id": "ES-BUR",
+   "criticality": "High",
+   "deck": [
+    9,
+    6,
+    2
+   ],
+   "checklist": [
+    9,
+    9,
+    4
+   ],
+   "match": false,
+   "deck_total": 17,
+   "checklist_total": 22
+  },
+  {
+   "scope": "site",
+   "id": "ES-BUR",
+   "criticality": "Medium",
+   "deck": [
+    2,
+    18,
+    1
+   ],
+   "checklist": [
+    2,
+    18,
+    1
+   ],
+   "match": true,
+   "deck_total": 21,
+   "checklist_total": 21
+  },
+  {
+   "scope": "site",
+   "id": "ES-BUR",
+   "criticality": "Low",
+   "deck": [
+    0,
+    11,
+    0
+   ],
+   "checklist": [
+    0,
+    11,
+    0
+   ],
+   "match": true,
+   "deck_total": 11,
+   "checklist_total": 11
+  },
+  {
+   "scope": "site",
+   "id": "ES-ACO",
+   "criticality": "High",
+   "deck": [
+    8,
+    0,
+    0
+   ],
+   "checklist": [
+    8,
+    0,
+    0
+   ],
+   "match": true,
+   "deck_total": 8,
+   "checklist_total": 8
+  },
+  {
+   "scope": "site",
+   "id": "ES-ACO",
+   "criticality": "Medium",
+   "deck": [
+    2,
+    1,
+    0
+   ],
+   "checklist": [
+    2,
+    1,
+    0
+   ],
+   "match": true,
+   "deck_total": 3,
+   "checklist_total": 3
+  },
+  {
+   "scope": "site",
+   "id": "ES-ACO",
+   "criticality": "Low",
+   "deck": [
+    0,
+    0,
+    0
+   ],
+   "checklist": [
+    0,
+    0,
+    0
+   ],
+   "match": true,
+   "deck_total": 0,
+   "checklist_total": 0
+  },
+  {
+   "scope": "site",
+   "id": "ES-MAD",
+   "criticality": "High",
+   "deck": [
+    8,
+    1,
+    0
+   ],
+   "checklist": [
+    11,
+    1,
+    0
+   ],
+   "match": false,
+   "deck_total": 9,
+   "checklist_total": 12
+  },
+  {
+   "scope": "site",
+   "id": "ES-MAD",
+   "criticality": "Medium",
+   "deck": [
+    0,
+    9,
+    6
+   ],
+   "checklist": [
+    0,
+    9,
+    6
+   ],
+   "match": true,
+   "deck_total": 15,
+   "checklist_total": 15
+  },
+  {
+   "scope": "site",
+   "id": "ES-MAD",
+   "criticality": "Low",
+   "deck": [
+    3,
+    1,
+    0
+   ],
+   "checklist": [
+    3,
+    1,
+    0
+   ],
+   "match": true,
+   "deck_total": 4,
+   "checklist_total": 4
+  },
+  {
+   "scope": "site",
+   "id": "PT-AVE",
+   "criticality": "High",
+   "deck": [
+    4,
+    3,
+    1
+   ],
+   "checklist": [
+    4,
+    3,
+    1
+   ],
+   "match": true,
+   "deck_total": 8,
+   "checklist_total": 8
+  },
+  {
+   "scope": "site",
+   "id": "PT-AVE",
+   "criticality": "Medium",
+   "deck": [
+    11,
+    4,
+    4
+   ],
+   "checklist": [
+    11,
+    4,
+    4
+   ],
+   "match": true,
+   "deck_total": 19,
+   "checklist_total": 19
+  },
+  {
+   "scope": "site",
+   "id": "PT-AVE",
+   "criticality": "Low",
+   "deck": [
+    2,
+    7,
+    1
+   ],
+   "checklist": [
+    2,
+    7,
+    1
+   ],
+   "match": true,
+   "deck_total": 10,
+   "checklist_total": 10
+  },
+  {
+   "scope": "site",
+   "id": "MX-MTY",
+   "criticality": "High",
+   "deck": [
+    23,
+    7,
+    5
+   ],
+   "checklist": [
+    23,
+    7,
+    5
+   ],
+   "match": true,
+   "deck_total": 35,
+   "checklist_total": 35
+  },
+  {
+   "scope": "site",
+   "id": "MX-MTY",
+   "criticality": "Medium",
+   "deck": [
+    22,
+    6,
+    0
+   ],
+   "checklist": [
+    22,
+    6,
+    0
+   ],
+   "match": true,
+   "deck_total": 28,
+   "checklist_total": 28
+  },
+  {
+   "scope": "site",
+   "id": "MX-MTY",
+   "criticality": "Low",
+   "deck": [
+    8,
+    0,
+    1
+   ],
+   "checklist": [
+    8,
+    0,
+    1
+   ],
+   "match": true,
+   "deck_total": 9,
+   "checklist_total": 9
+  },
+  {
+   "scope": "site",
+   "id": "MX-INO",
+   "criticality": "High",
+   "deck": [
+    13,
+    0,
+    3
+   ],
+   "checklist": [
+    13,
+    0,
+    3
+   ],
+   "match": true,
+   "deck_total": 16,
+   "checklist_total": 16
+  },
+  {
+   "scope": "site",
+   "id": "MX-INO",
+   "criticality": "Medium",
+   "deck": [
+    7,
+    2,
+    3
+   ],
+   "checklist": [
+    7,
+    2,
+    3
+   ],
+   "match": true,
+   "deck_total": 12,
+   "checklist_total": 12
+  },
+  {
+   "scope": "site",
+   "id": "MX-INO",
+   "criticality": "Low",
+   "deck": [
+    7,
+    1,
+    0
+   ],
+   "checklist": [
+    7,
+    1,
+    0
+   ],
+   "match": true,
+   "deck_total": 8,
+   "checklist_total": 8
+  },
+  {
+   "scope": "site",
+   "id": "MX-CDMX",
+   "criticality": "High",
+   "deck": [
+    22,
+    1,
+    2
+   ],
+   "checklist": [
+    22,
+    2,
+    3
+   ],
+   "match": false,
+   "deck_total": 25,
+   "checklist_total": 27
+  },
+  {
+   "scope": "site",
+   "id": "MX-CDMX",
+   "criticality": "Medium",
+   "deck": [
+    7,
+    3,
+    1
+   ],
+   "checklist": [
+    7,
+    3,
+    1
+   ],
+   "match": true,
+   "deck_total": 11,
+   "checklist_total": 11
+  },
+  {
+   "scope": "site",
+   "id": "MX-CDMX",
+   "criticality": "Low",
+   "deck": [
+    6,
+    1,
+    0
+   ],
+   "checklist": [
+    6,
+    1,
+    0
+   ],
+   "match": true,
+   "deck_total": 7,
+   "checklist_total": 7
+  },
+  {
+   "scope": "site",
+   "id": "CO-HOM",
+   "criticality": "High",
+   "deck": [
+    3,
+    1,
+    1
+   ],
+   "checklist": [
+    3,
+    1,
+    1
+   ],
+   "match": true,
+   "deck_total": 5,
+   "checklist_total": 5
+  },
+  {
+   "scope": "site",
+   "id": "CO-HOM",
+   "criticality": "Medium",
+   "deck": [
+    1,
+    1,
+    2
+   ],
+   "checklist": [
+    1,
+    1,
+    2
+   ],
+   "match": true,
+   "deck_total": 4,
+   "checklist_total": 4
+  },
+  {
+   "scope": "site",
+   "id": "CO-HOM",
+   "criticality": "Low",
+   "deck": [
+    1,
+    2,
+    9
+   ],
+   "checklist": [
+    1,
+    2,
+    9
+   ],
+   "match": true,
+   "deck_total": 12,
+   "checklist_total": 12
+  },
+  {
+   "scope": "site",
+   "id": "CO-EPC",
+   "criticality": "High",
+   "deck": [
+    6,
+    0,
+    10
+   ],
+   "checklist": [
+    4,
+    0,
+    12
+   ],
+   "match": false,
+   "deck_total": 16,
+   "checklist_total": 16
+  },
+  {
+   "scope": "site",
+   "id": "CO-EPC",
+   "criticality": "Medium",
+   "deck": [
+    3,
+    4,
+    12
+   ],
+   "checklist": [
+    4,
+    4,
+    11
+   ],
+   "match": false,
+   "deck_total": 19,
+   "checklist_total": 19
+  },
+  {
+   "scope": "site",
+   "id": "CO-EPC",
+   "criticality": "Low",
+   "deck": [
+    1,
+    2,
+    1
+   ],
+   "checklist": [
+    1,
+    2,
+    1
+   ],
+   "match": true,
+   "deck_total": 4,
+   "checklist_total": 4
+  },
+  {
+   "scope": "site",
+   "id": "FR-OFF",
+   "criticality": "High",
+   "deck": [
+    0,
+    0,
+    3
+   ],
+   "checklist": [
+    0,
+    0,
+    12
+   ],
+   "match": false,
+   "deck_total": 3,
+   "checklist_total": 12
+  },
+  {
+   "scope": "site",
+   "id": "FR-OFF",
+   "criticality": "Medium",
+   "deck": [
+    0,
+    0,
+    5
+   ],
+   "checklist": [
+    0,
+    0,
+    6
+   ],
+   "match": false,
+   "deck_total": 5,
+   "checklist_total": 6
+  },
+  {
+   "scope": "site",
+   "id": "FR-OFF",
+   "criticality": "Low",
+   "deck": [
+    0,
+    0,
+    10
+   ],
+   "checklist": [
+    0,
+    0,
+    11
+   ],
+   "match": false,
+   "deck_total": 10,
+   "checklist_total": 11
+  },
+  {
+   "scope": "site",
+   "id": "FR-EPC",
+   "criticality": "High",
+   "deck": [
+    0,
+    1,
+    5
+   ],
+   "checklist": [
+    0,
+    1,
+    19
+   ],
+   "match": false,
+   "deck_total": 6,
+   "checklist_total": 20
+  },
+  {
+   "scope": "site",
+   "id": "FR-EPC",
+   "criticality": "Medium",
+   "deck": [
+    0,
+    0,
+    4
+   ],
+   "checklist": [
+    0,
+    1,
+    6
+   ],
+   "match": false,
+   "deck_total": 4,
+   "checklist_total": 7
+  },
+  {
+   "scope": "site",
+   "id": "FR-EPC",
+   "criticality": "Low",
+   "deck": [
+    0,
+    0,
+    3
+   ],
+   "checklist": [
+    0,
+    0,
+    4
+   ],
+   "match": false,
+   "deck_total": 3,
+   "checklist_total": 4
+  },
+  {
+   "scope": "site",
+   "id": "GR-ATH",
+   "criticality": "High",
+   "deck": [
+    4,
+    0,
+    3
+   ],
+   "checklist": [
+    4,
+    4,
+    4
+   ],
+   "match": false,
+   "deck_total": 7,
+   "checklist_total": 12
+  },
+  {
+   "scope": "site",
+   "id": "GR-ATH",
+   "criticality": "Medium",
+   "deck": [
+    4,
+    1,
+    3
+   ],
+   "checklist": [
+    4,
+    4,
+    5
+   ],
+   "match": false,
+   "deck_total": 8,
+   "checklist_total": 13
+  },
+  {
+   "scope": "site",
+   "id": "GR-ATH",
+   "criticality": "Low",
+   "deck": [
+    1,
+    0,
+    2
+   ],
+   "checklist": [
+    1,
+    0,
+    1
+   ],
+   "match": false,
+   "deck_total": 3,
+   "checklist_total": 2
+  },
+  {
+   "scope": "site",
+   "id": "IT-BUC",
+   "criticality": "High",
+   "deck": [
+    11,
+    2,
+    0
+   ],
+   "checklist": [
+    11,
+    2,
+    0
+   ],
+   "match": true,
+   "deck_total": 13,
+   "checklist_total": 13
+  },
+  {
+   "scope": "site",
+   "id": "IT-BUC",
+   "criticality": "Medium",
+   "deck": [
+    14,
+    2,
+    1
+   ],
+   "checklist": [
+    14,
+    2,
+    1
+   ],
+   "match": true,
+   "deck_total": 17,
+   "checklist_total": 17
+  },
+  {
+   "scope": "site",
+   "id": "IT-BUC",
+   "criticality": "Low",
+   "deck": [
+    3,
+    4,
+    0
+   ],
+   "checklist": [
+    4,
+    4,
+    0
+   ],
+   "match": false,
+   "deck_total": 7,
+   "checklist_total": 8
+  },
+  {
+   "scope": "site group",
+   "id": "MX-IBE+MX-SCH+MX-BRA",
+   "criticality": "High",
+   "deck": [
+    16,
+    7,
+    13
+   ],
+   "checklist": [
+    12,
+    1,
+    7
+   ],
+   "match": false,
+   "deck_total": 36,
+   "checklist_total": 20
+  },
+  {
+   "scope": "site group",
+   "id": "MX-IBE+MX-SCH+MX-BRA",
+   "criticality": "Medium",
+   "deck": [
+    17,
+    4,
+    9
+   ],
+   "checklist": [
+    12,
+    3,
+    9
+   ],
+   "match": false,
+   "deck_total": 30,
+   "checklist_total": 24
+  },
+  {
+   "scope": "site group",
+   "id": "MX-IBE+MX-SCH+MX-BRA",
+   "criticality": "Low",
+   "deck": [
+    7,
+    6,
+    4
+   ],
+   "checklist": [
+    7,
+    1,
+    4
+   ],
+   "match": false,
+   "deck_total": 17,
+   "checklist_total": 12
+  }
+ ],
+ "deck_internal_inconsistencies": [
+  {
+   "chart": "Global pp.12–15 · Spain & Portugal · Office · High",
+   "deck": [
+    12,
+    3,
+    2
+   ],
+   "sum_of_site_slides": [
+    12,
+    4,
+    1
+   ],
+   "sites": "ES-MAD + PT-AVE"
+  },
+  {
+   "chart": "Global pp.12–15 · Spain & Portugal · Services · High",
+   "deck": [
+    10,
+    0,
+    0
+   ],
+   "sum_of_site_slides": [
+    8,
+    0,
+    0
+   ],
+   "sites": "ES-ACO"
+  },
+  {
+   "chart": "Global pp.14–15 · Spain & Portugal · Services · Medium",
+   "deck": [
+    0,
+    1,
+    0
+   ],
+   "sum_of_site_slides": [
+    2,
+    1,
+    0
+   ],
+   "sites": "ES-ACO"
+  },
+  {
+   "chart": "Global pp.16–17 · Mexico & Colombia · EPC · Medium",
+   "deck": [
+    11,
+    5,
+    15
+   ],
+   "sum_of_site_slides": [
+    10,
+    6,
+    15
+   ],
+   "sites": "MX-INO + CO-EPC"
+  },
+  {
+   "chart": "Global p.19 · Greece & Italy · Office · Medium",
+   "deck": [
+    18,
+    3,
+    3
+   ],
+   "sum_of_site_slides": [
+    18,
+    3,
+    4
+   ],
+   "sites": "GR-ATH + IT-BUC"
+  },
+  {
+   "chart": "Global p.19 · Greece & Italy · Office · Low",
+   "deck": [
+    4,
+    5,
+    2
+   ],
+   "sum_of_site_slides": [
+    4,
+    4,
+    2
+   ],
+   "sites": "GR-ATH + IT-BUC"
+  }
+ ]
+}

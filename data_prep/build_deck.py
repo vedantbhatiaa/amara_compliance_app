@@ -267,3 +267,46 @@ json.dump({"site_figures": site_figures, "group_figures": group_figures, "cluste
 # sanity checks against deck totals
 hi = [sum(r["values"][i] for r in global_high) for i in range(3)]
 print("global high C/P/NC", hi)  # deck: 184 compliant, 72 partial, 89 non-compliant
+
+# ── v0.3: all deck TEXT is taken verbatim from deck_text_verbatim.json (extracted from the PDFs with bullet
+#    structure, ✗/~ marks and sub-bullets; QA-checked twice). It replaces the hand-written text above so the
+#    dashboard never shows paraphrased wording.
+from pathlib import Path as _P
+_vt = json.load(open(_P(__file__).with_name("deck_text_verbatim.json"), encoding="utf-8"))
+_out = json.load(open("/home/claude/amara_compliance_app/data/deck_results.json", encoding="utf-8"))
+
+
+def _norm_groups(groups):
+    out = []
+    for g in groups:
+        g = dict(g)
+        g["bullets"] = [b if isinstance(b, dict) else {"text": b, "mark": ""} for b in g.get("bullets", [])]
+        for b in g["bullets"]:
+            b.setdefault("mark", ""); b.setdefault("sub", [])
+        out.append(g)
+    return out
+
+
+_deckname = {"Spain_Portugal": "Spain & Portugal", "Mexico_Colombia": "Mexico & Colombia", "France": "France",
+             "Greece_Italy": "Greece & Italy"}
+_sg = {}
+for sid, panel in _vt["site_gaps"].items():
+    src = f"{_deckname[panel['deck']]} cluster presentation, slide {panel['page']}"
+    entry = {"panel_title": panel.get("panel_title", "Key Compliance Gaps"), "groups": _norm_groups(panel["groups"]),
+             "source": src}
+    if panel.get("footnote"):
+        entry["footnote"] = panel["footnote"]
+    if sid == "MX-SERVICES":
+        for g in entry["groups"]:
+            key = {"IBERDROLA": "MX-IBE", "SCHNEIDER": "MX-SCH", "BRASKEM": "MX-BRA"}[g["heading"].split()[0].upper()]
+            _sg[key] = {**entry, "groups": [g]}
+    _sg[sid] = entry
+_out["site_gaps"] = _sg
+_out["cluster_gaps"] = {cl: {"pages": v.get("pages"), "groups": _norm_groups(v["groups"])} for cl, v in _vt["cluster_gaps"].items()}
+_out["global_gaps"] = {"pages": _vt["global_gaps"].get("pages"), "groups": _norm_groups(_vt["global_gaps"]["groups"])}
+_out["exec_summary"] = _vt["exec_summary"]
+_out["cluster_summary"] = _vt["cluster_summary"]
+_out["cluster_meta"] = {cl: {"countries": m["countries"], "flags": m["flags"]} for cl, m in cluster_meta.items()}
+json.dump(_out, open("/home/claude/amara_compliance_app/data/deck_results.json", "w", encoding="utf-8"),
+          ensure_ascii=False, indent=1)
+print("verbatim deck text applied")

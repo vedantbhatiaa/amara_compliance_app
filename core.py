@@ -35,6 +35,20 @@ CLUSTER_ORDER = ["Spain & Portugal", "Mexico & Colombia", "France", "Greece & It
 COUNTRY_CODE = {"Spain": "ES", "Portugal": "PT", "Mexico": "MX", "Colombia": "CO", "France": "FR",
                 "Greece": "GR", "Italy": "IT"}
 LANG_NAME = {"es": "Spanish", "fr": "French", "it": "Italian", "pt": "Portuguese", "en": "English"}
+NATIVE_LANG_NAME = {"es": "Español", "fr": "Français", "it": "Italiano", "pt": "Português", "en": "English"}
+# Translate dropdown (owner decision, v0.4): two options.
+#   "Original" — everything in the language of the region in focus: checklist rows and report findings as written in
+#                their source documents, and every English-authored text (interface, deck insights, English report
+#                findings) translated into that region's language. Greece's documents are English, so Greece = English.
+#   "English"  — everything in English.
+LANG_CHOICES = ["Original", "English"]
+LANG_COUNTRIES = {"en": "", "es": "ES · MX · CO", "pt": "PT", "fr": "FR", "it": "IT"}
+# Language of each country's source documents. Greece's checklist and report were written in English (kept as is).
+COUNTRY_LANG = {"Spain": "es", "Portugal": "pt", "Mexico": "es", "Colombia": "es", "France": "fr",
+                "Greece": "en", "Italy": "it"}
+NATIVE_COUNTRY_NAME = {"Spain": "España", "Portugal": "Portugal", "Mexico": "México", "Colombia": "Colombia",
+                       "France": "France", "Greece": "Greece (English)", "Italy": "Italia"}
+COUNTRY_ORDER = ["Spain", "Portugal", "Mexico", "Colombia", "France", "Greece", "Italy"]
 
 FIELD_LABELS_EN = {
     "country": "Country", "cluster": "Region (cluster)", "site": "Site", "business_type": "Type of business",
@@ -97,55 +111,153 @@ def load_all():
     deck = json.loads((DATA / "deck_results.json").read_text(encoding="utf-8"))
     reports = json.loads((DATA / "site_reports.json").read_text(encoding="utf-8"))
     headers = json.loads((DATA / "header_labels.json").read_text(encoding="utf-8"))
+    i18n = {}
     sites = (df.groupby("site_id", sort=False)
                .agg(site=("site", "first"), country=("country", "first"), cluster=("cluster", "first"),
                     business_type=("business_type", "first"), lang=("lang", "first"), n=("id", "size"))
                .reset_index())
-    return df, trmap, deck, reports, headers, sites
+    return df, trmap, deck, reports, headers, sites, i18n
+
+
+def lang_choice():
+    """'Original' or 'English' (Translate dropdown; default English)."""
+    return st.session_state.get("lang_mode", "English")
 
 
 def is_en():
-    return st.session_state.get("lang_mode", "Original") == "English"
+    return lang_choice() == "English"
 
 
-def T(text):
-    """Translate a checklist value when English mode is on."""
-    if not is_en() or not isinstance(text, str) or not text:
-        return text
-    _, trmap, *_ = load_all()
-    return trmap.get(text, trmap.get(text.strip(), text))
+def is_original():
+    return lang_choice() == "Original"
 
 
-def RT(item):
-    """Pick the right language from a report item {'en':..., 'orig':...}."""
-    if isinstance(item, dict):
-        return item.get("en") if is_en() else (item.get("orig") or item.get("en"))
-    return item
+def region_country():
+    """Country whose language 'Original' uses: on page 1 a single country picked in the register filter, otherwise the
+    country of the site selected in Site compliance (default: the first site, Madrid)."""
+    if st.session_state.get("nav", "Legal requirements") == "Legal requirements":
+        rc = st.session_state.get("r_country_Original") or []
+        if len(rc) == 1:
+            return rc[0]
+    sid = st.session_state.get("sel_site")
+    sites = load_all()[5]
+    row = sites[sites.site_id == sid]
+    return row.country.iloc[0] if len(row) else sites.country.iloc[0]
 
 
-def translate_df(df, cols):
-    if not is_en():
-        return df
-    out = df.copy()
-    _, trmap, *_ = load_all()
-    for c in cols:
-        if c in out.columns:
-            out[c] = out[c].map(lambda v: trmap.get(v, trmap.get(v.strip(), v)) if isinstance(v, str) and v else v)
+def region_lang():
+    return COUNTRY_LANG.get(region_country(), "en")
+
+
+def ui_lang():
+    """Language of interface, deck and English-authored report text."""
+    return "en" if is_en() else region_lang()
+
+
+def data_lang():
+    """Language of checklist cells: None = each cell in its source language ('Original'), 'en' in English mode."""
+    return "en" if is_en() else None
+
+
+_MISSES = set()
+
+
+def record_misses():
+    return _MISSES
+
+
+@st.cache_resource(show_spinner=False)
+def lang_map(lang):
+    """English → <lang> for every text in the app (interface, deck, reports, checklist English pivot)."""
+    p = DATA / "lang" / f"{lang}.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
+@st.cache_resource(show_spinner=False)
+def source_lang_index():
+    """Checklist cell value → language of the file it came from."""
+    df = load_all()[0]
+    idx = {}
+    for f in TRANSLATED_FIELDS:
+        for v, lg in zip(df[f], df["lang"]):
+            if v:
+                idx.setdefault(v, lg)
+    return idx
+
+
+TRANSLATED_FIELDS = ["installation", "facility_type", "activity", "norm", "eu_directive", "requirement", "question",
+                     "evidence", "notes", "documents", "amara_comments", "reason", "status", "criticality",
+                     "frequency", "missing_document", "responsible"]
+
+
+def _to(lang, en_text):
+    if lang == "en" or not en_text:
+        return en_text
+    m = lang_map(lang)
+    out = m.get(en_text) or m.get(en_text.strip())
+    if out is None:
+        _MISSES.add((lang, en_text))
+        return en_text
     return out
 
 
-def column_labels(fields, langs, site_ids):
-    """Headers in the original language when the view holds a single non-English source language."""
-    _, _, _, _, headers, _ = load_all()
-    labels = {f: FIELD_LABELS_EN.get(f, f) for f in fields}
-    if is_en() or len(set(langs)) != 1 or list(set(langs))[0] == "en":
-        return labels
-    for sid in site_ids:  # first site that carries each header
-        for f in fields:
-            h = headers.get(sid, {}).get(f)
-            if h and labels[f] == FIELD_LABELS_EN.get(f, f):
-                labels[f] = re.sub(r"\s+", " ", h).strip()
-    return labels
+def L(text):
+    """Interface / deck / report text (authored in English) in the interface language."""
+    if not isinstance(text, str) or not text:
+        return text
+    return _to(ui_lang(), text)
+
+
+def english_of(text, src=None):
+    """English version of a checklist cell."""
+    if not isinstance(text, str) or not text:
+        return text
+    src = src or source_lang_index().get(text, "en")
+    if src == "en":
+        return text
+    trmap = load_all()[1]
+    return trmap.get(text) or trmap.get(text.strip()) or text
+
+
+def T(text, src=None):
+    """Checklist cell: as written in its source document ('Original') or in English."""
+    if not isinstance(text, str) or not text:
+        return text
+    return english_of(text, src) if is_en() else text
+
+
+def RT(item, report_lang="en", site_lang=None):
+    """Report item {'en','orig'}: English in English mode; in 'Original' mode the report's own wording when it is in the
+    region language (incl. checklist-language bullets inside English reports), otherwise translated into it."""
+    if not isinstance(item, dict):
+        return L(item)
+    en, orig = item.get("en") or "", item.get("orig") or item.get("en") or ""
+    if is_en():
+        return en
+    lang = ui_lang()
+    if lang == "en":
+        return orig if report_lang == "en" else en
+    if report_lang == lang:
+        return orig
+    if orig != en and report_lang == "en" and site_lang == lang:
+        return orig
+    return _to(lang, en)
+
+
+def translate_df(df, cols):
+    """Checklist columns: unchanged in 'Original' mode, English in English mode."""
+    if not is_en():
+        return df
+    out = df.copy()
+    for c in cols:
+        if c in out.columns:
+            out[c] = out[c].map(T)
+    return out
+
+
+def column_labels(fields):
+    """Column headers in the interface language."""
+    return {f: L(FIELD_LABELS_EN.get(f, f)) for f in fields}
 
 
 def split_regulations(norm_text):
@@ -192,15 +304,26 @@ def section(title, sub=""):
                 unsafe_allow_html=True)
 
 
-def gap_panel_html(title, groups):
-    """Grey 'Key compliance gaps' panel as used on the right of the deck slides."""
-    html = f'<div class="gap-panel"><div class="gap-title">{title}</div>'
-    for heading, bullets in groups:
-        tone = DSS_RED if ("not compliant" in heading.lower() or "key gaps" in heading.lower()) else "#D9822B"
-        if "partial" in heading.lower():
-            tone = "#D9822B"
-        html += f'<div class="gap-h" style="color:{tone}">{heading}</div><ul>'
-        html += "".join(f"<li>{b}</li>" for b in bullets) + "</ul>"
+def gap_panel_html(title, groups, footnote=""):
+    """Grey 'Key compliance gaps' panel as used on the right of the deck slides.
+    groups: [{"heading", "sub", "bullets": [{"text", "mark", "sub": [...]}]}] (deck wording, translated with L)."""
+    html = f'<div class="gap-panel"><div class="gap-title">{esc(L(title))}</div>'
+    for g in groups:
+        h = g.get("heading", "")
+        tone = "#D9822B" if "partial" in h.lower() else DSS_RED
+        if h:
+            html += f'<div class="gap-h" style="color:{tone}">{esc(L(h))}</div>'
+        if g.get("sub"):
+            html += f'<div class="gap-sub">{esc(L(g["sub"]))}</div>'
+        tag = "p" if g.get("style") == "paragraph" else "li"
+        items = ""
+        for b in g.get("bullets", []):
+            mark = f'<span class="mark">{b.get("mark")}</span> ' if b.get("mark") else ""
+            sub = "".join(f"<li>{esc(L(x))}</li>" for x in b.get("sub", []))
+            items += f"<{tag}>{mark}{esc(L(b['text']))}{f'<ul class=sub>{sub}</ul>' if sub else ''}</{tag}>"
+        html += (items if tag == "p" else f"<ul>{items}</ul>")
+    if footnote:
+        html += f'<div class="gap-foot">{esc(L(footnote))}</div>'
     return html + "</div>"
 
 
