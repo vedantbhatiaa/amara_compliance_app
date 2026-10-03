@@ -159,9 +159,11 @@ def build_records_workbook():
     _title(ws, "Amara NZero · Legal compliance records (complete, unfiltered)",
            "dss+ Safety, Legal Compliance & Culture Assessment · June 2026 · Confidential")
     info = [
-        ("1 Requirements (Original)", "Page 1 · every legal requirement identified per country / site / type of business "
-                                      "(no criticality, no results) in the language of the source checklist."),
-        ("1 Requirements (English)", "Same records, English translation."),
+        ("1 Requirements (Original)", "Page 1 · the register: one row per UNIQUE legal requirement per country, with the "
+                                      "types of business, sites and checklist IDs it covers (no criticality, no results). "
+                                      "Wording and references of the first site listed, in the source language."),
+        ("1 Requirements (English)", "Same register, English translation."),
+        ("1 Requirement mapping", "Every checklist row (all sites) → its unique requirement ID, to verify the count."),
         ("2 Checklist (Original)", "Page 2 · the same requirements with the site assessment: criticality, compliance status, "
                                    "reason, comments — as recorded in the working Excel files."),
         ("2 Checklist (English)", "Same records, English translation."),
@@ -180,20 +182,48 @@ def build_records_workbook():
                    "fill colour (France checklists; one Burgos row).").font = NOTE_FONT
     ws.cell(19, 1, "Pendiente / Pendente / Pending (evidence pending) is normalised to Non-compliant.").font = NOTE_FONT
 
-    req_cols = REQ_COLS
-    full_cols = REQ_COLS + ASSESS_COLS
-    widths_req = [11, 16, 9, 26, 12, 11, 13, 20, 16, 30, 40, 26, 60, 50, 45, 45, 35, 35]
-    widths_full = widths_req + [14, 14, 16, 12, 18, 50, 40, 25, 18]
-    wrap_req = tuple(range(9, len(req_cols)))
-    for name, cols, eng, widths in [("1 Requirements (Original)", req_cols, False, widths_req),
-                                    ("1 Requirements (English)", req_cols, True, widths_req),
-                                    ("2 Checklist (Original)", full_cols, False, widths_full),
-                                    ("2 Checklist (English)", full_cols, True, widths_full)]:
-        s = wb.create_sheet(name)
-        data = _sheet_rows(rows, cols, tr, eng)
-        _table(s, 1, 1, [h for _, h in cols], data, widths=widths, wrap_cols=wrap_req)
-        s.freeze_panes = "E2"
-        s.auto_filter.ref = f"A1:{get_column_letter(len(cols))}{len(data) + 1}"
+    # Page 1 register: one row per unique legal requirement (req_uid), first site in site order as representative
+    site_order = list(dict.fromkeys(r["site_id"] for r in rows))
+    grp = {}
+    for r in sorted(rows, key=lambda r: (site_order.index(r["site_id"]), r["row"])):
+        grp.setdefault(r["req_uid"], []).append(r)
+    reg_cols = ["Country", "Requirement ID", "Types of business", "Sites", "Site IDs", "Checklist IDs",
+                "Checklist rows", "Source language", "Key activity", "Standard / Reference", "Legal requirement",
+                "Assessment question", "Required evidence"]
+    for name, eng in [("1 Requirements (Original)", False), ("1 Requirements (English)", True)]:
+        s1 = wb.create_sheet(name)
+        data = []
+        for uid, rs in grp.items():
+            f = rs[0]
+            tx = (lambda v: _en(tr, v)) if eng else (lambda v: v)
+            sites = list(dict.fromkeys(x["site_id"] for x in rs))
+            data.append([f["country"], uid, ", ".join(t for t in TYPES if t in {x["business_type"] for x in rs}),
+                         ", ".join(dict.fromkeys(x["site"] for x in rs)), ", ".join(sites),
+                         ", ".join(dict.fromkeys(x["id"] for x in rs if x["id"])), len(rs),
+                         LANG_NAME.get(f["lang"], f["lang"]), tx(f["activity"]), tx(f["norm"]), tx(f["requirement"]),
+                         tx(f["question"]), tx(f["evidence"])])
+        _table(s1, 1, 1, reg_cols, data, widths=[11, 12, 16, 40, 22, 22, 9, 11, 30, 40, 60, 50, 45],
+               wrap_cols=(3, 4, 5, 8, 9, 10, 11, 12))
+        s1.freeze_panes = "C2"
+        s1.auto_filter.ref = f"A1:{get_column_letter(len(reg_cols))}{len(data) + 1}"
+    s1 = wb.create_sheet("1 Requirement mapping")
+    data = [[r["country"], r["site_id"], r["site"], r["business_type"], r["row"], r["id"], r["req_uid"], r["req_uid_type"],
+             r["requirement"]] for r in sorted(rows, key=lambda r: (site_order.index(r["site_id"]), r["row"]))]
+    _table(s1, 1, 1, ["Country", "Site ID", "Site", "Type of business", "Source Excel row", "Checklist ID",
+                      "Unique requirement ID (country)", "Unique requirement ID (country × type)",
+                      "Legal requirement (as written)"], data, widths=[11, 9, 30, 14, 9, 14, 14, 16, 100], wrap_cols=(8,))
+    s1.freeze_panes = "C2"
+    s1.auto_filter.ref = f"A1:I{len(data) + 1}"
+
+    full_cols = REQ_COLS + [("req_uid", "Unique requirement ID")] + ASSESS_COLS
+    widths_full = [11, 16, 9, 26, 12, 11, 13, 20, 16, 30, 40, 26, 60, 50, 45, 45, 35, 35, 14,
+                   14, 14, 16, 12, 18, 50, 40, 25, 18]
+    for name, eng in [("2 Checklist (Original)", False), ("2 Checklist (English)", True)]:
+        s1 = wb.create_sheet(name)
+        data = _sheet_rows(rows, full_cols, tr, eng)
+        _table(s1, 1, 1, [h for _, h in full_cols], data, widths=widths_full, wrap_cols=tuple(range(9, 18)))
+        s1.freeze_panes = "E2"
+        s1.auto_filter.ref = f"A1:{get_column_letter(len(full_cols))}{len(data) + 1}"
 
     site_meta = {}
     for r in rows:
@@ -292,9 +322,8 @@ def build_graph_workbook():
     _title(ws, "Amara NZero · Data behind every dashboard chart",
            "Each sheet = one chart: the table it plots (totals as SUM formulas you can check) and the same chart in Excel.")
     contents = [
-        ("P1 Country x type", "Page 1 · requirements by country and type of business (treemap + matrix)"),
-        ("P1 Regulations", "Page 1 · most-referenced regulations (top 15 charted, full list below)"),
-        ("P1 Requirements per site", "Page 1 · requirements per site"),
+        ("P1 Country x type", "Page 1 · unique legal requirements by country and type of business (treemap)"),
+        ("P1 Requirements per site", "Page 1 · unique legal requirements per site (and checklist rows)"),
         ("P1 KPIs", "Page 1 · headline numbers"),
         ("P2 Site criticality", "Page 2 · 'Compliance status by criticality' for every site (deck figures, or checklist where the deck has no site chart)"),
         ("P2 Site status (checklist)", "Page 2 · overall status of all checklist items per site (donut) + KPIs"),
@@ -316,50 +345,57 @@ def build_graph_workbook():
     ]
     _table(ws, 4, 1, ["Sheet", "Chart / content"], contents, widths=[30, 120], wrap_cols=(1,))
 
-    # ── Page 1 ──
+    # ── Page 1 (unique legal requirements, see data_prep/build_unique_requirements.py) ──
     s = wb.create_sheet("P1 Country x type")
-    _title(s, "Requirements by country and type of business", "Source: 23 site checklists (1,002 requirements).")
+    _title(s, "Unique legal requirements by country and type of business (treemap)",
+           f"Source: 23 site checklists ({len(rows):,} rows). One unique requirement = one legal obligation within a "
+           "country; the same obligation at several sites (even when adapted to each region) or repeated on several "
+           "rows counts once. 'Country total' counts a requirement shared by two types of business once.")
     data = []
     for i, c in enumerate(COUNTRIES):
-        r = [c] + [sum(1 for x in rows if x["country"] == c and x["business_type"] == t) for t in TYPES]
-        data.append(r + [f"=SUM(B{5 + i}:F{5 + i})"])
-    r0, r1 = _table(s, 4, 1, ["Country", *TYPES, "Total"], data, widths=[14, 10, 10, 10, 11, 10, 10])
+        n = 5 + i
+        per_t = [len({x["req_uid_type"] for x in rows if x["country"] == c and x["business_type"] == t}) for t in TYPES]
+        data.append([c, *per_t, f"=SUM(B{n}:F{n})", len({x["req_uid"] for x in rows if x["country"] == c}),
+                     f"=G{n}-H{n}", sum(1 for x in rows if x["country"] == c)])
+    r0, r1 = _table(s, 4, 1, ["Country", *TYPES, "Sum of types", "Country total (unique)", "Shared by 2 types",
+                              "Checklist rows"], data, widths=[14, 10, 10, 10, 11, 10, 12, 14, 12, 12])
     s.cell(r1 + 1, 1, "Total").font = Font(bold=True)
-    for j in range(6):
+    for j in range(9):
         col = get_column_letter(2 + j)
         s.cell(r1 + 1, 2 + j, f"=SUM({col}{r0}:{col}{r1})").font = Font(bold=True)
-    s.cell(r1 + 2, 1, f"Check: equals total records ({len(rows)})").font = NOTE_FONT
-    _stack_chart(s, "Requirements by country and type of business", Reference(s, min_col=1, min_row=r0, max_row=r1),
-                 2, 5, r0, r1, "J4", ["2F6DB5", "8A8FA3", NAVY, GREEN, "C4A11A"])
-
-    s = wb.create_sheet("P1 Regulations")
-    _title(s, "Most-referenced regulations", "Regulation references split from the 'Standard / Reference' column; count = "
-                                             "number of requirements citing each.")
-    cnt = Counter(x for r in rows for x in set(_split_regs(r["norm"])))
-    top = cnt.most_common()
-    r0, r1 = _table(s, 4, 1, ["Regulation", "Requirements citing it"], top, widths=[40, 12])
-    _stack_chart(s, "Top 15 regulations", Reference(s, min_col=1, min_row=r0, max_row=r0 + 14), 2, 1, r0, r0 + 14,
-                 "E4", [NAVY], horizontal=True, stacked=False, height=12)
+    s.cell(r1 + 2, 1, f"Checks: country totals sum to {len({x['req_uid'] for x in rows})} unique requirements "
+                      f"(page 1 KPI and register rows); checklist rows sum to {len(rows)}.").font = NOTE_FONT
+    _stack_chart(s, "Unique legal requirements by country and type of business",
+                 Reference(s, min_col=1, min_row=r0, max_row=r1), 2, 5, r0, r1, "M4",
+                 ["2F6DB5", "8A8FA3", NAVY, GREEN, "C4A11A"])
 
     s = wb.create_sheet("P1 Requirements per site")
-    _title(s, "Requirements per site")
+    _title(s, "Unique legal requirements per site", "Unique = distinct legal requirements in the site's checklist "
+                                                    "(rows repeating the same requirement count once).")
     per = Counter(r["site_id"] for r in rows)
     meta = {}
     for r in rows:
         meta.setdefault(r["site_id"], r)
-    order = sorted(meta, key=lambda k: (COUNTRIES.index(meta[k]["country"]), -per[k]))
-    data = [[meta[k]["country"], k, meta[k]["site"], meta[k]["business_type"], per[k]] for k in order]
-    r0, r1 = _table(s, 4, 1, ["Country", "Site ID", "Site", "Type of business", "Requirements"], data,
-                    widths=[11, 9, 38, 14, 12])
+    uniq = {k: len({r["req_uid"] for r in rows if r["site_id"] == k}) for k in meta}
+    order = sorted(meta, key=lambda k: (COUNTRIES.index(meta[k]["country"]), -uniq[k]))
+    data = [[meta[k]["country"], k, meta[k]["site"], meta[k]["business_type"], uniq[k], per[k],
+             f"=F{5 + i}-E{5 + i}"] for i, k in enumerate(order)]
+    r0, r1 = _table(s, 4, 1, ["Country", "Site ID", "Site", "Type of business", "Unique legal requirements",
+                              "Checklist rows", "Repeated rows"], data, widths=[11, 9, 38, 14, 14, 12, 12])
     s.cell(r1 + 1, 4, "Total").font = Font(bold=True)
-    s.cell(r1 + 1, 5, f"=SUM(E{r0}:E{r1})").font = Font(bold=True)
-    _stack_chart(s, "Requirements per site", Reference(s, min_col=3, min_row=r0, max_row=r1), 5, 1, r0, r1, "H4",
-                 [GREEN], horizontal=True, stacked=False, height=14)
+    for col in "EFG":
+        s.cell(r1 + 1, " EFG".index(col) + 4, f"=SUM({col}{r0}:{col}{r1})").font = Font(bold=True)
+    s.cell(r1 + 2, 1, "The site totals add up to more than the country totals because the same requirement at several "
+                      "sites is counted at each site here and once per country on the treemap.").font = NOTE_FONT
+    _stack_chart(s, "Unique legal requirements per site", Reference(s, min_col=3, min_row=r0, max_row=r1), 5, 1, r0, r1,
+                 "J4", [GREEN], horizontal=True, stacked=False, height=14)
 
     s = wb.create_sheet("P1 KPIs")
     _title(s, "Page 1 headline numbers")
-    kp = [("Legal requirements", len(rows)), ("Key activities (distinct, as written)", len({r["activity"] for r in rows})),
-          ("Regulations referenced (distinct)", len(cnt)), ("Sites", len(meta)),
+    regs = {x for r in rows for x in _split_regs(r["norm"])}
+    kp = [("Legal requirements (unique)", len({r["req_uid"] for r in rows})), ("Checklist rows", len(rows)),
+          ("Key activities (distinct, as written)", len({r["activity"] for r in rows})),
+          ("Regulations referenced (distinct)", len(regs)), ("Sites", len(meta)),
           ("Countries", len({r["country"] for r in rows})), ("Types of business", len({r["business_type"] for r in rows}))]
     _table(s, 3, 1, ["Measure", "Value"], kp, widths=[40, 10])
 

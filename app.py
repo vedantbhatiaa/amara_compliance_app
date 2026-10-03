@@ -26,18 +26,30 @@ st.set_page_config(page_title="Amara NZero · Legal Compliance", page_icon="🛡
 df, TRMAP, DECK, REPORTS, HEADERS, SITES, I18N = load_all()
 SITE = SITES.set_index("site_id")
 
-# Keep the site selection alive while other pages are shown (widgets that are not rendered lose their state).
-for _k in ("sel_cluster", "sel_country", "sel_site"):
-    if _k in st.session_state:
-        st.session_state[_k] = st.session_state[_k]
-# Language mode must be known before anything is drawn.
-# Language must be known before anything is drawn. Options = languages of the country / cluster on screen + English;
-# a choice that is not available on this page falls back to the page's own language (or English).
+# Resolve the Region → Country → Site cascade *before* anything is drawn, the same way the drop-downs on page 2
+# will (an option that is no longer valid falls back to the first one). This keeps the selection alive while other
+# pages are shown, and lets the Translate box know the country / cluster on screen in the same run.
+_ss = st.session_state
+PAGES = ["Legal requirements", "Site compliance", "Cluster results", "Global · high criticality"]
+# The page lives in its own state ("page"): the section buttons are translated, and Streamlit would treat translated
+# buttons as a new widget and reset them to page 1 whenever the language changes.
+if _ss.get("page") not in PAGES:
+    _ss["page"] = _ss.get("nav") if _ss.get("nav") in PAGES else PAGES[0]
+_ss["nav"] = _ss["page"]
+_cl = _ss.get("sel_cluster") if _ss.get("sel_cluster") in CLUSTER_ORDER else CLUSTER_ORDER[0]
+_countries = [c for c in COUNTRY_ORDER if c in set(SITES[SITES.cluster == _cl].country)]
+_co = _ss.get("sel_country") if _ss.get("sel_country") in _countries else _countries[0]
+_sites = list(SITES[SITES.country == _co].site_id)
+_ss["sel_cluster"], _ss["sel_country"] = _cl, _co
+_ss["sel_site"] = _ss.get("sel_site") if _ss.get("sel_site") in _sites else _sites[0]
+
+# Translate options = languages of the country / cluster on screen + English. English is the default: whenever the
+# page or the set of available languages changes, the language goes back to English.
 LANG_OPTS = page_languages()
-_code = st.session_state.get("lang_code", "en")
-if _code not in LANG_OPTS:
-    _code = LANG_OPTS[0] if _code != "en" else "en"
-st.session_state["lang_code"] = _code
+_sig = (_ss["page"], tuple(LANG_OPTS))
+if _ss.get("_lang_sig") != _sig or _ss.get("lang_code", "en") not in LANG_OPTS:
+    _ss["lang_code"] = "en"
+    _ss["_lang_sig"] = _sig
 
 st.markdown(f"""
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -141,7 +153,7 @@ st.markdown(f"""
   <img class="dss" src="data:image/png;base64,{img_b64(ASSETS / 'dss_logo.png')}" alt="dss+">
   <div class="divider"></div>
   <div style="flex:1">
-    <div class="eyebrow">{esc(L("Safety, Legal Compliance & Culture Assessment · June 2026"))}</div>
+    <div class="eyebrow">{esc(L("Safety, Legal Compliance & Culture Assessment · 2026"))}</div>
     <div class="apptitle">{esc(L("Legal & Regulatory Compliance — Amara NZero"))}</div>
     <div class="subtitle"><span class="flagstrip">{flags}</span>&nbsp; {esc(L("7 countries · 4 clusters · 23 sites assessed"))}</div>
   </div>
@@ -150,11 +162,14 @@ st.markdown(f"""
 <div class="greenrule"></div>""", unsafe_allow_html=True)
 
 # ── Navigation (four boxes) + translate dropdown on the same row ─────────────────
-PAGES = ["Legal requirements", "Site compliance", "Cluster results", "Global · high criticality"]
 nav_col, lang_col = st.columns([5, 1.25], vertical_alignment="center", gap="medium")
 with nav_col:
     with st.container(key="navbox"):
-        PAGE = st.radio("Section", PAGES, horizontal=True, key="nav", label_visibility="collapsed", format_func=L)
+        def _set_page():
+            st.session_state["page"] = st.session_state["nav"]
+
+        PAGE = st.radio("Section", PAGES, horizontal=True, key="nav", label_visibility="collapsed", format_func=L,
+                        on_change=_set_page)
 with lang_col:
     with st.container(key="langbox"):
         _lang_key = "lang_sel_" + "_".join(LANG_OPTS)
@@ -190,6 +205,20 @@ def graphs_xlsx():
 
 
 XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+REP_NOTE = ("Where several sites share a requirement, the wording and references shown are those of the first site "
+            "listed; each site's own wording is in Site compliance and in the Excel records.")
+UNIQUE_NOTE = ("A requirement that applies to several sites, or to several types of business in a country, is counted once "
+               "in the country total; the same obligation adapted to each region (city, regional law or authority) counts "
+               "once.")
+COUNT_RULES = [
+    "One unique legal requirement = one legal obligation within a country.",
+    "The same obligation at several sites counts once, even when each site's checklist adapts it to its region "
+    "(city, regional law, regional authority) and numbers it differently.",
+    "Rows repeated inside one checklist (e.g. one line per piece of evidence) count once.",
+    "A requirement shared by two types of business in a country (e.g. the Vitoria factory and the warehouses) counts "
+    "once in the country total.",
+    "Compliance results are still assessed per site and per checklist row in Site compliance.",
+]
 NO_COMMENTS = f'<li style="list-style:none;color:#8A8FA3">{esc(L("No comments recorded"))}</li>'
 
 
@@ -216,10 +245,12 @@ if PAGE == PAGES[0]:
             esc(L("Legal requirements identified for Amara NZero's activities")))
 
     view = df.copy()
-    view["activity_disp"] = view.activity.map(T)
+    view["site_order"] = view.site_id.map({s: k for k, s in enumerate(SITES.site_id)})
     regs = view.norm.map(split_regulations).explode().dropna()
+    by_type, by_country, n_unique = C.unique_counts(view)
     kpi_row([
-        (L("Legal requirements"), f"{len(view):,}", L("identified across all sites")),
+        (L("Legal requirements"), f"{n_unique:,}",
+         L("unique, from {rows} checklist rows").format(rows=f"{len(view):,}")),
         (L("Key activities"), f"{view.activity.nunique():,}", L("activity groups")),
         (L("Regulations referenced"), f"{regs.nunique():,}", L("laws, decrees, standards")),
         (L("Sites"), f"{view.site_id.nunique()}", L("{n} countries").format(n=view.country.nunique())),
@@ -227,43 +258,40 @@ if PAGE == PAGES[0]:
          " · ".join(L(b) for b in BUSINESS_ORDER if b in set(view.business_type))),
     ])
 
-    c1, c2 = st.columns([1.3, 1], gap="large")
-    with c1:
-        st.markdown(f"**{L('Requirements by country and type of business')}** · "
-                    f"{L('number of legal requirements (click a country to focus, click the top bar to go back)')}")
-        st.plotly_chart(C.treemap(view, height=470), width="stretch", config=C.CONFIG, key="t1_tree")
-    with c2:
-        st.markdown(f"**{L('Requirements matrix')}** · {L('country × type of business')}")
-        st.plotly_chart(C.count_matrix(view, height=470), width="stretch", config=C.CONFIG, key="t1_matrix")
+    st.markdown(f"**{L('Requirements by country and type of business')}** · "
+                f"{L('number of unique legal requirements (click a country to focus, click the top bar to go back)')}")
+    st.plotly_chart(C.treemap(view, height=470), width="stretch", config=C.CONFIG, key="t1_tree")
+    st.markdown(f'<div class="srcnote">{esc(L(UNIQUE_NOTE))}</div>', unsafe_allow_html=True)
 
-    c3, c4 = st.columns([1, 1.3], gap="large")
-    with c3:
-        st.markdown(f"**{L('Most-referenced regulations')}** · {L('number of requirements citing each')}")
-        top = regs.value_counts().head(15)
-        st.plotly_chart(C.regulation_bars(top, height=500), width="stretch", config=C.CONFIG, key="t1_regs")
-    with c4:
-        st.markdown(f"**{L('Requirements per site')}** · {L('coloured by type of business')}")
-        st.plotly_chart(C.site_bars(view, height=500), width="stretch", config=C.CONFIG, key="t1_sites")
-
+    # ── Register: one row per unique legal requirement per country ───────────────
     section(esc(L("Legal requirements register")),
-            esc(lang_badge(view.lang)) + " · " + esc(L("filter by country, site, type of business, key activity or requirement")))
+            esc(lang_badge(view.lang)) + " · " + esc(L("one row per unique legal requirement · filter by country, site, "
+                                                        "type of business, key activity or requirement")))
+    rep = (view.sort_values(["site_order", "row"]).groupby("req_uid", sort=False)
+               .agg(country=("country", "first"), lang=("lang", "first"), activity=("activity", "first"),
+                    requirement=("requirement", "first"), norm=("norm", "first"),
+                    types=("business_type", lambda s: [b for b in BUSINESS_ORDER if b in set(s)]),
+                    site_ids=("site_id", lambda s: list(dict.fromkeys(s))),
+                    source_ids=("id", lambda s: list(dict.fromkeys(x for x in s if x))))
+               .reset_index())
+    rep["activity_disp"] = rep.activity.map(T)
     f1, f2, f3, f4, f5 = st.columns([1, 1.3, 1, 1.5, 1.5])
     with f1:
-        # Country labels must not change with the language they select (Streamlit keeps selections as labels), so
-        # Original mode lists each country in its own language; the key is per mode.
         r_country = st.multiselect(L("Country"), COUNTRY_ORDER, placeholder=L("All countries"), key="r_country",
                                    format_func=lambda c: NATIVE_COUNTRY_NAME[c])
-    reg = view if not r_country else view[view.country.isin(r_country)]
+    reg = rep if not r_country else rep[rep.country.isin(r_country)]
     with f2:
-        r_site = st.multiselect(L("Site"), list(dict.fromkeys(reg.site_id)), placeholder=L("All sites"), key=f"r_site_{ui_lang()}",
+        site_opts = [s for s in SITES.site_id if s in {x for l in reg.site_ids for x in l}]
+        r_site = st.multiselect(L("Site"), site_opts, placeholder=L("All sites"), key=f"r_site_{ui_lang()}",
                                 format_func=lambda s: L(SITE.site[s]))
-    reg = reg if not r_site else reg[reg.site_id.isin(r_site)]
+    reg = reg if not r_site else reg[reg.site_ids.map(lambda l: bool(set(l) & set(r_site)))]
     with f3:
-        r_type = st.multiselect(L("Type of business"), [b for b in BUSINESS_ORDER if b in set(reg.business_type)],
+        r_type = st.multiselect(L("Type of business"), [b for b in BUSINESS_ORDER if b in {x for l in reg.types for x in l}],
                                 placeholder=L("All types"), key=f"r_type_{ui_lang()}", format_func=L)
-    reg = reg if not r_type else reg[reg.business_type.isin(r_type)]
+    reg = reg if not r_type else reg[reg.types.map(lambda l: bool(set(l) & set(r_type)))]
     with f4:
-        r_act = st.multiselect(L("Key activity"), sorted(set(reg.activity_disp)), placeholder=L("All activities"), key=f"r_act_{ui_lang()}")
+        r_act = st.multiselect(L("Key activity"), sorted(set(reg.activity_disp)), placeholder=L("All activities"),
+                               key=f"r_act_{ui_lang()}")
     reg = reg if not r_act else reg[reg.activity_disp.isin(r_act)]
     with f5:
         r_q = st.text_input(L("Requirement / regulation contains"), placeholder=L("e.g. ATEX, RD 486/1997, contractor…"),
@@ -276,27 +304,55 @@ if PAGE == PAGES[0]:
             mask |= reg[c].map(english_of).str.lower().str.contains(q, regex=False)
         reg = reg[mask]
 
-    fields = ["country", "site", "business_type", "id", "activity", "requirement", "norm"]
-    out = translate_df(reg[fields], ["activity", "requirement", "norm"])
-    for f in ("country", "site", "business_type"):
-        out[f] = out[f].map(L)
-    labels = column_labels(fields)
+    out = pd.DataFrame({
+        "country": reg.country.map(L),
+        "business_type": reg.types.map(lambda l: ", ".join(L(b) for b in l)),
+        "site": reg.site_ids.map(lambda l: ", ".join(L(SITE.site[s]) for s in l)),
+        "req_uid": reg.req_uid,
+        "activity": [T(v, s) for v, s in zip(reg.activity, reg.lang)],
+        "requirement": [T(v, s) for v, s in zip(reg.requirement, reg.lang)],
+        "norm": [T(v, s) for v, s in zip(reg.norm, reg.lang)],
+        "source_ids": reg.source_ids.map(", ".join),
+    })
+    labels = {**column_labels(["country", "business_type", "activity", "requirement", "norm"]),
+              "site": L("Sites"), "req_uid": L("Requirement ID"), "source_ids": L("Checklist IDs")}
     out = out.rename(columns=labels)
     st.dataframe(out, hide_index=True, height=600, width="stretch", row_height=40,
                  column_config={labels["country"]: st.column_config.TextColumn(labels["country"], width="small"),
+                                labels["business_type"]: st.column_config.TextColumn(labels["business_type"], width="small"),
                                 labels["site"]: st.column_config.TextColumn(labels["site"], width="medium"),
-                                labels["business_type"]: st.column_config.TextColumn(labels["business_type"], width="medium"),
-                                labels["id"]: st.column_config.TextColumn(labels["id"], width="small"),
+                                labels["req_uid"]: st.column_config.TextColumn(labels["req_uid"], width="small"),
                                 labels["activity"]: st.column_config.TextColumn(labels["activity"], width="medium"),
                                 labels["requirement"]: st.column_config.TextColumn(labels["requirement"], width="large"),
-                                labels["norm"]: st.column_config.TextColumn(labels["norm"], width="large")})
+                                labels["norm"]: st.column_config.TextColumn(labels["norm"], width="large"),
+                                labels["source_ids"]: st.column_config.TextColumn(labels["source_ids"], width="small")})
     d0, d1, d2 = st.columns([4, 1, 1])
-    d0.markdown(f'<div class="note">{esc(L("{n} of {total} requirements shown.").format(n=f"{len(out):,}", total=f"{len(view):,}"))} '
-                f'{esc(L("Compliance results per site are in Site compliance."))}</div>', unsafe_allow_html=True)
+    d0.markdown(f'<div class="note">{esc(L("{n} of {total} unique legal requirements shown.").format(n=f"{len(out):,}", total=f"{n_unique:,}"))} '
+                f'{esc(L(REP_NOTE))}</div>',
+                unsafe_allow_html=True)
     d1.download_button("⬇ Excel", to_excel(out, "Legal requirements"), "amara_legal_requirements_filtered.xlsx", XLSX,
                        width="stretch")
     d2.download_button("⬇ CSV", out.to_csv(index=False).encode("utf-8-sig"), "amara_legal_requirements_filtered.csv",
                        "text/csv", width="stretch")
+
+    # ── Unique requirements per site ──────────────────────────────────────────────
+    st.write("")
+    c3, c4 = st.columns([1.35, 1], gap="large")
+    with c3:
+        st.markdown(f"**{L('Requirements per site')}** · {L('unique legal requirements, coloured by type of business')}")
+        st.plotly_chart(C.site_bars(view, height=560), width="stretch", config=C.CONFIG, key="t1_sites")
+    with c4:
+        st.markdown(f"**{L('How requirements are counted')}**")
+        st.markdown(f'<div class="card"><ul>'
+                    + "".join(f"<li>{esc(L(x))}</li>" for x in COUNT_RULES) + "</ul></div>", unsafe_allow_html=True)
+        st.write("")
+        stab = C.site_table(view)
+        dup = stab[stab.rows != stab.n]
+        if len(dup):
+            st.markdown(f'<div class="note">{esc(L("Sites whose checklist repeats a requirement on several rows"))}</div>',
+                        unsafe_allow_html=True)
+            st.dataframe(pd.DataFrame({L("Site"): dup.site.map(L), L("Checklist rows"): dup.rows,
+                                       L("Unique legal requirements"): dup.n}), hide_index=True, width="stretch")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # PAGE 2 — Site drill-down

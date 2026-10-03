@@ -213,74 +213,53 @@ def heat_rate(rows, z, text, height=None):
     return fig
 
 
-def treemap(df, height=430):
-    """All countries → country → type of business, each tile showing its number of requirements.
-    A single root node lets the user click back out after zooming into a country."""
-    g = df.groupby(["country", "business_type"]).size().reset_index(name="n")
-    ctot = g.groupby("country").n.sum().sort_values(ascending=False)
-    ids, labels, parents, values, colors = ["ALL"], [L("All countries")], [""], [int(g.n.sum())], ["#F2F3F5"]
-    for c in ctot.index:
-        ids.append(c); labels.append(L(c)); parents.append("ALL"); values.append(int(ctot[c]))
-        colors.append(COUNTRY_TONES.get(c, "#8A8FA3"))
-    for c, b, n in g.values:
+def unique_counts(df):
+    """Unique legal requirements (see data_prep/build_unique_requirements.py).
+    Returns (per country × type: n unique, per country: n unique, overall: n unique). A requirement that applies to
+    several types of business in a country counts once in that country's total."""
+    by_type = df.groupby(["country", "business_type"]).req_uid_type.nunique()
+    by_country = df.groupby("country").req_uid.nunique()
+    return by_type, by_country, int(df.req_uid.nunique())
+
+
+def treemap(df, height=470):
+    """All countries → country → type of business; every tile shows its number of UNIQUE legal requirements.
+    Tile areas follow the type-of-business counts; a country's label shows its own unique total. A single root node
+    lets the user click back out after zooming into a country."""
+    by_type, by_country, total = unique_counts(df)
+    countries = [c for c in by_country.sort_values(ascending=False).index]
+    ids, labels, parents, values, shown, colors = (["ALL"], [f"{L('All countries')} · {total}"], [""], [0], [total],
+                                                   ["#F2F3F5"])
+    for c in countries:
+        ids.append(c); labels.append(f"{L(c)} · {int(by_country[c])}"); parents.append("ALL"); values.append(0)
+        shown.append(int(by_country[c])); colors.append(COUNTRY_TONES.get(c, "#8A8FA3"))
+    for (c, b), n in by_type.items():
         ids.append(f"{c}|{b}"); labels.append(L(b)); parents.append(c); values.append(int(n))
-        colors.append(COUNTRY_TONES.get(c, "#8A8FA3"))
+        shown.append(int(n)); colors.append(COUNTRY_TONES.get(c, "#8A8FA3"))
     fig = go.Figure(go.Treemap(
-        ids=ids, labels=labels, parents=parents, values=values, branchvalues="total", maxdepth=3,
-        marker=dict(colors=colors, line=dict(color="white", width=2)),
-        texttemplate="<b>%{label}</b><br><span style='font-size:18px'>%{value}</span>",
+        ids=ids, labels=labels, parents=parents, values=values, customdata=shown, branchvalues="remainder",
+        maxdepth=3, marker=dict(colors=colors, line=dict(color="white", width=2)),
+        texttemplate="<b>%{label}</b><br><span style='font-size:18px'>%{customdata}</span>",
         textposition="middle center", insidetextfont=dict(family=FONT, color="white", size=14),
         outsidetextfont=dict(family=FONT, color=NAVY, size=13),
         tiling=dict(pad=3), pathbar=dict(visible=True, thickness=24, textfont=dict(family=FONT, size=13)),
         root=dict(color="#F2F3F5"),
-        hovertemplate="<b>%{label}</b><br>%{value} " + L("legal requirements") + "<extra></extra>"))
+        hovertemplate="<b>%{label}</b><br>%{customdata} " + L("unique legal requirements") + "<extra></extra>"))
     fig.update_layout(height=height, margin=dict(l=0, r=0, t=30, b=0), paper_bgcolor="rgba(0,0,0,0)",
                       font=dict(family=FONT, color=NAVY))
     return fig
 
 
-def count_table(df):
-    """Country × type-of-business counts (English keys) with a Total column."""
-    countries = [c for c in COUNTRY_ORDER if c in set(df.country)]
-    types = [b for b in BUSINESS_ORDER if b in set(df.business_type)]
-    tab = (df.groupby(["country", "business_type"]).size().unstack(fill_value=0)
-             .reindex(index=countries, columns=types, fill_value=0))
-    tab["Total"] = tab.sum(axis=1)
-    return tab
-
-
-def count_matrix(df, height=430):
-    """Country × type of business matrix of requirement counts."""
-    tab = count_table(df)
-    countries, types = list(tab.index), [c for c in tab.columns if c != "Total"]
-    xs = [L(t) for t in types] + [L("Total")]
-    ys = [L(c) for c in countries]
-    z = [[(v if v else None) for v in row[:-1]] + [None] for row in tab.values.tolist()]
-    text = [[(str(v) if v else "–") for v in row] for row in tab.values.tolist()]
-    fig = go.Figure(go.Heatmap(
-        z=z, x=xs, y=ys, text=text, texttemplate="%{text}",
-        textfont=dict(size=15, family=FONT), colorscale=[[0, "#E7F4EC"], [1, "#1FA276"]], showscale=False,
-        xgap=4, ygap=4, hovertemplate="%{y} · %{x}<br><b>%{text}</b> " + L("legal requirements") + "<extra></extra>"))
-    for i, c in enumerate(countries):
-        fig.add_shape(type="rect", x0=len(types) - 0.5 + 0.03, x1=len(types) + 0.5 - 0.03, y0=i - 0.5 + 0.04,
-                      y1=i + 0.5 - 0.04, fillcolor=NAVY, line=dict(width=0), layer="below")
-        fig.add_annotation(x=xs[-1], y=ys[i], text=f"<b>{int(tab.loc[c, 'Total'])}</b>", showarrow=False,
-                           font=dict(color="white", size=15, family=FONT))
-    _base(fig, height, legend=False, margin=dict(l=10, r=10, t=30, b=10))
-    fig.update_xaxes(side="top", tickfont=dict(color=NAVY, size=13), showline=False)
-    fig.update_yaxes(autorange="reversed", showgrid=False, tickfont=dict(color=NAVY, size=13))
-    return fig
-
-
 def site_table(df):
-    """Requirements per site (English keys), ordered by country then size."""
-    g = df.groupby(["country", "site_id", "site", "business_type"]).size().reset_index(name="n")
+    """Unique legal requirements and checklist rows per site (English keys), ordered by country then size."""
+    g = (df.groupby(["country", "site_id", "site", "business_type"])
+           .agg(n=("req_uid", "nunique"), rows=("req_uid", "size")).reset_index())
     g["ci"] = g.country.map({c: i for i, c in enumerate(COUNTRY_ORDER)})
     return g.sort_values(["ci", "n"], ascending=[True, False]).drop(columns="ci")
 
 
 def site_bars(df, height=460):
-    """Number of requirements per site, grouped by country, coloured by type of business."""
+    """Number of unique legal requirements per site, grouped by country, coloured by type of business."""
     g = site_table(df)
     g["label"] = g.site.map(L) + "  ·  " + g.country.map(COUNTRY_CODE)
     fig = go.Figure()
@@ -290,22 +269,11 @@ def site_bars(df, height=460):
             continue
         fig.add_trace(go.Bar(y=s.label, x=s.n, name=L(b), orientation="h", marker=dict(color=TYPE_COLORS[b]),
                              text=s.n, textposition="outside", textfont=dict(color=INK_2, size=11), cliponaxis=False,
-                             hovertemplate="%{y}<br>" + L(b) + ": <b>%{x}</b> " + L("requirements") + "<extra></extra>"))
+                             hovertemplate="%{y}<br>" + L(b) + ": <b>%{x}</b> " + L("unique legal requirements")
+                                           + "<extra></extra>"))
     _base(fig, height, margin=dict(l=10, r=30, t=30, b=10))
     fig.update_layout(barmode="overlay", bargap=0.25)
     fig.update_yaxes(categoryorder="array", categoryarray=list(g.label), autorange="reversed", showgrid=False,
                      tickfont=dict(color=NAVY, size=11))
-    fig.update_xaxes(showgrid=True, gridcolor=GRID)
-    return fig
-
-
-def regulation_bars(series, height=None, color="#1B1F3B"):
-    fig = go.Figure(go.Bar(y=series.index, x=series.values, orientation="h",
-                           marker=dict(color=color, line=dict(width=0)), text=series.values, textposition="outside",
-                           textfont=dict(color=INK_2, size=11), cliponaxis=False,
-                           hovertemplate="%{y}<br>" + L("Referenced in") + " <b>%{x}</b> " + L("requirements")
-                                         + "<extra></extra>"))
-    _base(fig, height or 60 + 24 * len(series), legend=False, margin=dict(l=10, r=30, t=10, b=10))
-    fig.update_yaxes(autorange="reversed", showgrid=False, tickfont=dict(color=NAVY, size=11))
     fig.update_xaxes(showgrid=True, gridcolor=GRID)
     return fig

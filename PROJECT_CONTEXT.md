@@ -272,8 +272,46 @@ final accuracy pass on site-visit report content.
   screen plus English: page 2 = the site's language + English (Greece: English only); page 3 = the cluster's
   languages + English (e.g. Spain & Portugal → Español, Português, English); page 1 = languages of the countries in
   the register filter (all four if no filter) + English; page 4 = all languages + English. State: `lang_code`.
-  If the chosen language is not offered on the next page, the page's own language is used (English stays English).
+  **English is the default**: the language resets to English whenever the page changes or the set of offered
+  languages changes (e.g. Spanish on page 1 → page 2 with a Mexico site opens in English with Español | English).
+  Changing site within the same language set keeps the chosen language.
+- The current page is stored in `page` (the section buttons are translated, and Streamlit would otherwise reset
+  them to page 1 on a language change). The Region → Country → Site cascade is resolved at the top of each run so
+  the Translate box sees the site that will be shown.
 - Checklist rows appear as written when their source language is the chosen one; otherwise in English (page 1 with
   mixed countries says so under the register title). English-authored text uses `data/lang/<code>.json`.
 - `pandas.Styler` needs `jinja2` (now in requirements.txt); without it the page-2 table falls back to no colours.
 - Check: `python data_prep/check_translation_coverage.py` → 117 page/language states, 0 errors, 0 untranslated texts.
+
+---
+
+## v0.6 — Unique requirements on page 1 (Oct 2026)
+
+**Definition.** A *unique requirement* is one legal obligation within one country. The same obligation repeated
+across sites of that country counts once. Checklist IDs are NOT comparable across sites (e.g. ES-ACT-016 is a
+different requirement at Meco and Sevilla), so matching uses the requirement text normalised by `norm()` (city/site
+names, accents, punctuation removed). Spain warehouses use a reviewed manual grouping
+(`data_prep/spain_warehouse_requirement_groups.json`, 80 groups; loading vs packing lighting/equipment kept separate).
+Identical text across business types within a country is joined (union-find).
+
+- IDs written into `data/checklist.json`: `req_uid_type` = `CC-TYPE-nnn` (unique per country × type, 660) and
+  `req_uid` = `CC-Rnnn` (unique per country, 606). 1,041 checklist rows map to these.
+- **Run order:** `python data_prep/build_data.py` → `python data_prep/build_unique_requirements.py` → exports.
+- Unique per country: Mexico 207, Spain 163, Colombia 70, France 49, Portugal 45, Italy 44, Greece 28 = 606.
+  Type tiles: Mexico Warehouse 81 / Services 55 / Office 47 / EPC 38; Spain Factory 81 / Warehouse 80 / Office 31 /
+  Services 11; Colombia EPC 49 / Office 21; France Office 26 / EPC 23. A country total can be lower than the sum of
+  its type tiles (an obligation shared by two business types counts once in the country).
+
+**Page 1 layout:** eyebrow "… Assessment · 2026" (no month); KPI "Legal requirements" = unique count; full-width
+treemap (country headers show unique totals, tiles = unique per type; `branchvalues="remainder"`); requirement
+register (one row per unique requirement, with types, sites and contributing checklist IDs); below it, left:
+unique requirements per site; right: "How requirements are counted" card + sites with repeated rows. Removed: the
+requirement matrix and the most-referenced regulations chart.
+
+**Excel:** records workbook sheet 1 = 606 unique requirements (original + English), new `1 Requirement mapping`
+(1,041 rows → IDs), checklist sheets gain "Unique requirement ID". Chart workbook: P1 Country x type and P1
+Requirements per site use unique counts (rows shown alongside); P1 Regulations removed.
+
+**QA flag for task 3:** Valencia (ES warehouse) rows 252–257 repeat rows 190–195 under contractor-management /
+loading sections, which looks like a copy error in the source checklist. They currently count as the same unique
+requirements.

@@ -132,7 +132,7 @@ def page_countries():
     """Countries on screen: page 1 = countries filtered in the register (all if none); page 2 = the selected site's
     country; page 3 = the countries of that site's cluster; page 4 = all countries."""
     sites = load_all()[5]
-    page = st.session_state.get("nav", "Legal requirements")
+    page = st.session_state.get("page") or st.session_state.get("nav", "Legal requirements")
     if page == "Legal requirements":
         return st.session_state.get("r_country") or COUNTRY_ORDER
     if page == "Global · high criticality":

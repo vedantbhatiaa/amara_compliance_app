@@ -40,8 +40,14 @@ errors = 0
 for st_ in states:
     at = AppTest.from_file(APP, default_timeout=300)
     for k, v in st_.items():
-        at.session_state[k] = v
-    at.run()
+        if k != "lang_code":
+            at.session_state[k] = v
+    at.run()                                   # page opens in English (default)
+    if at.session_state["lang_code"] != "en":
+        errors += 1
+        print("DEFAULT NOT ENGLISH", st_)
+    at.session_state["lang_code"] = st_["lang_code"]
+    at.run()                                   # then the language is chosen
     if at.exception:
         errors += 1
         print("EXCEPTION", st_, at.exception[0].value[:300])
