@@ -36,18 +36,18 @@ COUNTRY_CODE = {"Spain": "ES", "Portugal": "PT", "Mexico": "MX", "Colombia": "CO
                 "Greece": "GR", "Italy": "IT"}
 LANG_NAME = {"es": "Spanish", "fr": "French", "it": "Italian", "pt": "Portuguese", "en": "English"}
 NATIVE_LANG_NAME = {"es": "Español", "fr": "Français", "it": "Italiano", "pt": "Português", "en": "English"}
-# Translate dropdown (owner decision, v0.4): two options.
-#   "Original" — everything in the language of the region in focus: checklist rows and report findings as written in
-#                their source documents, and every English-authored text (interface, deck insights, English report
-#                findings) translated into that region's language. Greece's documents are English, so Greece = English.
-#   "English"  — everything in English.
-LANG_CHOICES = ["Original", "English"]
+# Translate dropdown (owner decision, v0.5): the options are the languages of the country / cluster on screen plus
+# English — e.g. a Spanish site: Español | English; the Spain & Portugal cluster: Español | Português | English.
+# Checklists and reports are shown as written when they are in the chosen language; every English-authored text
+# (interface, deck insights, English report findings) is translated via data/lang/<code>.json.
+LANG_CHOICES = ["es", "pt", "fr", "it", "en"]
 LANG_COUNTRIES = {"en": "", "es": "ES · MX · CO", "pt": "PT", "fr": "FR", "it": "IT"}
 # Language of each country's source documents. Greece's checklist and report were written in English (kept as is).
 COUNTRY_LANG = {"Spain": "es", "Portugal": "pt", "Mexico": "es", "Colombia": "es", "France": "fr",
                 "Greece": "en", "Italy": "it"}
-NATIVE_COUNTRY_NAME = {"Spain": "España", "Portugal": "Portugal", "Mexico": "México", "Colombia": "Colombia",
-                       "France": "France", "Greece": "Greece (English)", "Italy": "Italia"}
+# Country labels for the page-1 filter: constant in every language (Streamlit keeps multiselect selections as labels).
+NATIVE_COUNTRY_NAME = {"Spain": "España / Spain", "Portugal": "Portugal", "Mexico": "México / Mexico",
+                       "Colombia": "Colombia", "France": "France", "Greece": "Ελλάδα / Greece", "Italy": "Italia / Italy"}
 COUNTRY_ORDER = ["Spain", "Portugal", "Mexico", "Colombia", "France", "Greece", "Italy"]
 
 FIELD_LABELS_EN = {
@@ -120,43 +120,44 @@ def load_all():
 
 
 def lang_choice():
-    """'Original' or 'English' (Translate dropdown; default English)."""
-    return st.session_state.get("lang_mode", "English")
+    """Language code chosen in the Translate dropdown (default English)."""
+    return st.session_state.get("lang_code", "en")
 
 
 def is_en():
-    return lang_choice() == "English"
+    return lang_choice() == "en"
 
 
-def is_original():
-    return lang_choice() == "Original"
-
-
-def region_country():
-    """Country whose language 'Original' uses: on page 1 a single country picked in the register filter, otherwise the
-    country of the site selected in Site compliance (default: the first site, Madrid)."""
-    if st.session_state.get("nav", "Legal requirements") == "Legal requirements":
-        rc = st.session_state.get("r_country_Original") or []
-        if len(rc) == 1:
-            return rc[0]
-    sid = st.session_state.get("sel_site")
+def page_countries():
+    """Countries on screen: page 1 = countries filtered in the register (all if none); page 2 = the selected site's
+    country; page 3 = the countries of that site's cluster; page 4 = all countries."""
     sites = load_all()[5]
+    page = st.session_state.get("nav", "Legal requirements")
+    if page == "Legal requirements":
+        return st.session_state.get("r_country") or COUNTRY_ORDER
+    if page == "Global · high criticality":
+        return COUNTRY_ORDER
+    sid = st.session_state.get("sel_site")
     row = sites[sites.site_id == sid]
-    return row.country.iloc[0] if len(row) else sites.country.iloc[0]
+    row = row if len(row) else sites.iloc[:1]
+    if page == "Site compliance":
+        return [row.country.iloc[0]]
+    return [c for c in COUNTRY_ORDER if c in set(sites[sites.cluster == row.cluster.iloc[0]].country)]
 
 
-def region_lang():
-    return COUNTRY_LANG.get(region_country(), "en")
+def page_languages():
+    """Translate options for the current page: the languages of the countries on screen, then English."""
+    langs = []
+    for c in page_countries():
+        lg = COUNTRY_LANG.get(c, "en")
+        if lg != "en" and lg not in langs:
+            langs.append(lg)
+    return [lg for lg in LANG_CHOICES if lg in langs] + ["en"]
 
 
 def ui_lang():
     """Language of interface, deck and English-authored report text."""
-    return "en" if is_en() else region_lang()
-
-
-def data_lang():
-    """Language of checklist cells: None = each cell in its source language ('Original'), 'en' in English mode."""
-    return "en" if is_en() else None
+    return lang_choice()
 
 
 _MISSES = set()
@@ -220,23 +221,30 @@ def english_of(text, src=None):
 
 
 def T(text, src=None):
-    """Checklist cell: as written in its source document ('Original') or in English."""
+    """Checklist cell in the chosen language: as written when its source is in that language, otherwise English
+    (checklists exist in their source language and in English)."""
     if not isinstance(text, str) or not text:
         return text
-    return english_of(text, src) if is_en() else text
+    src = src or source_lang_index().get(text, "en")
+    if src == lang_choice():
+        return text
+    return english_of(text, src)
+
+
+def shows_source(src_lang):
+    """True when checklist rows of this source language appear as written."""
+    return src_lang == lang_choice()
 
 
 def RT(item, report_lang="en", site_lang=None):
-    """Report item {'en','orig'}: English in English mode; in 'Original' mode the report's own wording when it is in the
-    region language (incl. checklist-language bullets inside English reports), otherwise translated into it."""
+    """Report item {'en','orig'} in the chosen language: the report's own wording when it is in that language
+    (incl. checklist-language bullets inside English reports), otherwise translated from English."""
     if not isinstance(item, dict):
         return L(item)
     en, orig = item.get("en") or "", item.get("orig") or item.get("en") or ""
-    if is_en():
-        return en
     lang = ui_lang()
     if lang == "en":
-        return orig if report_lang == "en" else en
+        return en
     if report_lang == lang:
         return orig
     if orig != en and report_lang == "en" and site_lang == lang:
@@ -245,9 +253,7 @@ def RT(item, report_lang="en", site_lang=None):
 
 
 def translate_df(df, cols):
-    """Checklist columns: unchanged in 'Original' mode, English in English mode."""
-    if not is_en():
-        return df
+    """Checklist columns in the chosen language (see T)."""
     out = df.copy()
     for c in cols:
         if c in out.columns:

@@ -1,26 +1,67 @@
-"""Translation coverage + smoke test: every site x page x language mode in a fresh AppTest; prints exceptions and
-lists English strings requested without a translation (written to translation_misses.json)."""
-import json, sys
+"""Translation coverage + smoke test.
+
+Runs the app (Streamlit AppTest, fresh app per state) for every site x page x every language the Translate dropdown
+offers on that page, plus page 1 filtered to each country. Prints exceptions and writes to translation_misses.json
+every English text that was requested in another language without a translation. Expected result: 0 exceptions and
+only source-language checklist text in the misses (those are shown as written).
+Usage:  python data_prep/check_translation_coverage.py
+"""
+import json
+import os
+import sys
+
 from streamlit.testing.v1 import AppTest
-import os; APP=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'app.py')
-S=json.load(open(os.path.join(os.path.dirname(APP),'data','checklist.json')))
-sites={}
-for r in S: sites.setdefault(r['site_id'],(r['cluster'],r['country']))
-PAGES=["Site compliance","Cluster results","Global · high criticality","Legal requirements"]
-errs=0
-def fresh(state):
-    at=AppTest.from_file(APP,default_timeout=300)
-    for k,v in state.items(): at.session_state[k]=v
-    return at
-for sid,(cl,co) in sites.items():
-  for mode in ["Original","English"]:
-    for p in PAGES:
-        at=fresh({"lang_widget":mode,"sel_cluster":cl,"sel_country":co,"sel_site":sid,"nav":p}).run()
-        if at.exception: errs+=1; print(sid,mode,p,at.exception[0].value[:300])
-for co in ["Spain","Portugal","Mexico","Colombia","France","Greece","Italy"]:
-    at=fresh({"lang_widget":"Original","nav":"Legal requirements","r_country_Original":[co]}).run()
-    if at.exception: errs+=1; print(co,at.exception[0].value[:300])
-core=sys.modules['core']
-m=sorted(core.record_misses())
-print("errors",errs,"misses",len(m))
-json.dump(m,open('translation_misses.json','w'),ensure_ascii=False)
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+APP = os.path.join(ROOT, "app.py")
+rows = json.load(open(os.path.join(ROOT, "data", "checklist.json"), encoding="utf-8"))
+sites = {}
+for r in rows:
+    sites.setdefault(r["site_id"], (r["cluster"], r["country"]))
+LANG = {"Spain": "es", "Portugal": "pt", "Mexico": "es", "Colombia": "es", "France": "fr", "Greece": "en", "Italy": "it"}
+CLUSTER_LANGS = {}
+for sid, (cl, co) in sites.items():
+    CLUSTER_LANGS.setdefault(cl, set()).add(LANG[co])
+
+states = []
+for sid, (cl, co) in sites.items():
+    base = {"sel_cluster": cl, "sel_country": co, "sel_site": sid}
+    for lg in {LANG[co], "en"}:
+        states.append({**base, "nav": "Site compliance", "lang_code": lg})
+    for lg in CLUSTER_LANGS[cl] | {"en"}:
+        states.append({**base, "nav": "Cluster results", "lang_code": lg})
+for lg in ["es", "pt", "fr", "it", "en"]:
+    states.append({"nav": "Global · high criticality", "lang_code": lg})
+    states.append({"nav": "Legal requirements", "lang_code": lg})
+for co, lg in LANG.items():
+    states.append({"nav": "Legal requirements", "lang_code": lg, "r_country": [co]})
+
+errors = 0
+for st_ in states:
+    at = AppTest.from_file(APP, default_timeout=300)
+    for k, v in st_.items():
+        at.session_state[k] = v
+    at.run()
+    if at.exception:
+        errors += 1
+        print("EXCEPTION", st_, at.exception[0].value[:300])
+    elif at.session_state["lang_code"] != st_["lang_code"]:
+        errors += 1
+        print("LANGUAGE NOT APPLIED", st_, at.session_state["lang_code"])
+core = sys.modules["core"]
+misses = sorted(core.record_misses())
+F = ["installation", "facility_type", "activity", "norm", "eu_directive", "requirement", "question", "evidence", "notes",
+     "documents", "amara_comments", "reason", "status", "criticality", "frequency", "missing_document", "responsible"]
+src, acts = set(), set()
+for r in rows:
+    if r["lang"] != "en":
+        src.update(r[f] for f in F if r.get(f))
+        acts.add(r["activity"])
+reps = json.load(open(os.path.join(ROOT, "data", "site_reports.json"), encoding="utf-8"))
+for rep in reps.values():
+    if rep.get("report_language") != "en":
+        for ka in rep["key_activities"]:
+            src.update(ka.get("regulations", []))
+real = [(lg, t) for lg, t in misses if t not in src and t.split(": ")[0] not in acts]
+json.dump(real, open(os.path.join(ROOT, "translation_misses.json"), "w"), ensure_ascii=False, indent=1)
+print(f"states={len(states)} exceptions/language errors={errors} untranslated English texts={len(real)}")

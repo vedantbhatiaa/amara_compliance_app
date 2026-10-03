@@ -263,3 +263,17 @@ improvement, quick wins, recommendations).
 
 **Next**: task 3: full QA/QC of source Excel ↔ dataset ↔ dashboard tables ↔ deck charts ↔ translations; task 5:
 final accuracy pass on site-visit report content.
+
+---
+
+## v0.5 — Translate dropdown lists real languages (Oct 2026)
+
+- The dropdown (box styled like the four section boxes, with arrow) offers the languages of the country / cluster on
+  screen plus English: page 2 = the site's language + English (Greece: English only); page 3 = the cluster's
+  languages + English (e.g. Spain & Portugal → Español, Português, English); page 1 = languages of the countries in
+  the register filter (all four if no filter) + English; page 4 = all languages + English. State: `lang_code`.
+  If the chosen language is not offered on the next page, the page's own language is used (English stays English).
+- Checklist rows appear as written when their source language is the chosen one; otherwise in English (page 1 with
+  mixed countries says so under the register title). English-authored text uses `data/lang/<code>.json`.
+- `pandas.Styler` needs `jinja2` (now in requirements.txt); without it the page-2 table falls back to no colours.
+- Check: `python data_prep/check_translation_coverage.py` → 117 page/language states, 0 errors, 0 untranslated texts.

@@ -14,9 +14,9 @@ import streamlit as st
 
 import charts as C
 from core import (AMARA_GREEN, ASSETS, BUSINESS_ORDER, CLUSTER_ORDER, COUNTRY_CODE, COUNTRY_LANG, COUNTRY_ORDER,
-                  CRIT_ORDER, DSS_RED, INK_2, LANG_CHOICES, LANG_COUNTRIES, LANG_NAME, MUTED, NATIVE_COUNTRY_NAME, NATIVE_LANG_NAME, NAVY,
+                  CRIT_ORDER, DSS_RED, INK_2, LANG_CHOICES, LANG_NAME, MUTED, NATIVE_COUNTRY_NAME, NATIVE_LANG_NAME, NAVY,
                   PANEL, STATUS_COLORS, STATUS_ORDER, L, RT, T, column_labels, counts_from_checklist, english_of, esc,
-                  flag_html, gap_panel_html, img_b64, is_en, is_original, kpi_row, lang_choice, load_all, region_country, region_lang,
+                  flag_html, gap_panel_html, img_b64, is_en, kpi_row, lang_choice, load_all, page_languages,
                   section, split_regulations, translate_df, ui_lang)
 from exports import build_graph_workbook, build_records_workbook
 
@@ -31,7 +31,13 @@ for _k in ("sel_cluster", "sel_country", "sel_site"):
     if _k in st.session_state:
         st.session_state[_k] = st.session_state[_k]
 # Language mode must be known before anything is drawn.
-st.session_state["lang_mode"] = st.session_state.get("lang_widget", "English")
+# Language must be known before anything is drawn. Options = languages of the country / cluster on screen + English;
+# a choice that is not available on this page falls back to the page's own language (or English).
+LANG_OPTS = page_languages()
+_code = st.session_state.get("lang_code", "en")
+if _code not in LANG_OPTS:
+    _code = LANG_OPTS[0] if _code != "en" else "en"
+st.session_state["lang_code"] = _code
 
 st.markdown(f"""
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -70,10 +76,15 @@ header[data-testid="stHeader"] {{ background: transparent; height: 0; }}
 .st-key-navbox div[role="radiogroup"] > *:has(input:checked) {{ background:{NAVY}; border-color:{NAVY};
   box-shadow:inset 0 -4px 0 {AMARA_GREEN}; }}
 .st-key-navbox div[role="radiogroup"] > *:has(input:checked) p {{ color:white; }}
-.st-key-langbox {{ background:{PANEL}; border:1px solid #DCDFE6; border-radius:6px; padding:4px 10px 6px 10px; }}
-.st-key-langbox label p {{ font-size:12.5px; font-weight:700; color:{INK_2}; }}
-.st-key-langbox [data-baseweb="select"] > div {{ background:white; border-color:#DCDFE6; min-height:36px; }}
-.st-key-langbox [data-baseweb="select"] div {{ font-weight:600; color:{NAVY}; }}
+.st-key-langbox {{ background:{PANEL}; border:1px solid #DCDFE6; border-radius:6px; min-height:52px;
+  padding:5px 8px; justify-content:center; }}
+/* selectbox box + arrow: new (react-aria) and old (baseweb) Streamlit markup */
+.st-key-langbox [data-testid="stSelectbox"] div[role="group"], .st-key-langbox [data-baseweb="select"] > div {{
+  background:white; border:1px solid #DCDFE6; min-height:40px; border-radius:5px; cursor:pointer; }}
+.st-key-langbox [data-testid="stSelectbox"] input, .st-key-langbox [data-baseweb="select"] div {{
+  font-weight:700; color:{NAVY}; font-size:14.5px; cursor:pointer; }}
+.st-key-langbox [data-testid="stSelectbox"] svg, .st-key-langbox [data-baseweb="select"] svg {{
+  color:{NAVY}; fill:{NAVY}; opacity:1; width:22px; height:22px; }}
 .navrule {{ height:2px; background:#E6E8EE; margin:6px 0 4px 0; }}
 /* sections, kpis */
 .section h3 {{ color:{NAVY}; font-weight:800; font-size:22px; margin:18px 0 2px 0; }}
@@ -117,7 +128,6 @@ table.assess td ul {{ margin:0; padding-left:18px; }}
 .chip {{ background:rgba(255,255,255,.12); border-radius:999px; padding:4px 12px; font-size:12px; margin-left:6px; }}
 .note {{ color:{MUTED}; font-size:12px; }}
 .srcnote {{ color:{MUTED}; font-size:11.5px; margin-top:-6px; }}
-.langnote {{ font-size:11.5px; color:{MUTED}; margin-top:-6px; }}
 .footer {{ color:{MUTED}; font-size:11.5px; border-top:1px solid #E6E8EE; margin-top:28px; padding-top:10px;
   display:flex; justify-content:space-between; }}
 div[data-testid="stDataFrame"] {{ border:1px solid #D5D8E0; border-radius:8px; }}
@@ -147,15 +157,14 @@ with nav_col:
         PAGE = st.radio("Section", PAGES, horizontal=True, key="nav", label_visibility="collapsed", format_func=L)
 with lang_col:
     with st.container(key="langbox"):
-        st.selectbox("🌐 " + L("Translate"), LANG_CHOICES, index=1, key="lang_widget",
-                     format_func=lambda o: L("Original") if o == "Original" else "English",
-                     help=L("Original: everything in the language of the region in focus (the site selected in Site "
-                            "compliance, or the single country filtered on this page). Checklists and reports are shown "
-                            "as written; interface and English-authored findings are translated. English: everything "
-                            "in English."))
-        rc = region_country()
-        st.markdown(f'<div class="langnote">{flag_html(COUNTRY_CODE[rc], 12)} {esc(L("Original"))} = '
-                    f'{NATIVE_LANG_NAME[region_lang()]} · {esc(L(rc))}</div>', unsafe_allow_html=True)
+        _lang_key = "lang_sel_" + "_".join(LANG_OPTS)
+        st.session_state[_lang_key] = st.session_state["lang_code"]
+
+        def _set_lang(k=_lang_key):
+            st.session_state["lang_code"] = st.session_state[k]
+
+        st.selectbox(L("Translate"), LANG_OPTS, key=_lang_key, on_change=_set_lang, label_visibility="collapsed",
+                     format_func=lambda c: "🌐  " + NATIVE_LANG_NAME[c])
 st.markdown('<div class="navrule"></div>', unsafe_allow_html=True)
 
 
@@ -185,9 +194,13 @@ NO_COMMENTS = f'<li style="list-style:none;color:#8A8FA3">{esc(L("No comments re
 
 
 def lang_badge(langs):
-    if is_original():
-        return L("Showing original language") + " · " + ", ".join(L(LANG_NAME.get(x, x)) for x in sorted(set(langs)))
-    return L("Showing English translation")
+    langs, lc = set(langs), lang_choice()
+    if langs == {lc}:
+        return L("Showing original language") + " · " + NATIVE_LANG_NAME[lc]
+    if lc == "en":
+        return L("Showing English translation")
+    return L("Rows written in {lang} are shown as written; rows from other countries are shown in English.").format(
+        lang=NATIVE_LANG_NAME[lc])
 
 
 def card(title, items, color, allow_br=False):
@@ -238,9 +251,8 @@ if PAGE == PAGES[0]:
     with f1:
         # Country labels must not change with the language they select (Streamlit keeps selections as labels), so
         # Original mode lists each country in its own language; the key is per mode.
-        r_country = st.multiselect(L("Country"), COUNTRY_ORDER, placeholder=L("All countries"),
-                                   key=f"r_country_{lang_choice()}",
-                                   format_func=(lambda c: NATIVE_COUNTRY_NAME[c]) if is_original() else (lambda c: c))
+        r_country = st.multiselect(L("Country"), COUNTRY_ORDER, placeholder=L("All countries"), key="r_country",
+                                   format_func=lambda c: NATIVE_COUNTRY_NAME[c])
     reg = view if not r_country else view[view.country.isin(r_country)]
     with f2:
         r_site = st.multiselect(L("Site"), list(dict.fromkeys(reg.site_id)), placeholder=L("All sites"), key=f"r_site_{ui_lang()}",
@@ -459,7 +471,10 @@ if PAGE == PAGES[1]:
         c = color_by_label.get(v)
         return f"background-color:{c}33; color:{NAVY}; font-weight:600" if c else ""
 
-    styled = out.style.map(_color_status, subset=[stat_col])
+    try:  # pandas Styler needs jinja2; without it the table is shown without status colours
+        styled = out.style.map(_color_status, subset=[stat_col])
+    except (AttributeError, ImportError):
+        styled = out
     wide = {labels[f]: st.column_config.TextColumn(labels[f], width="large") for f in
             ["requirement", "question", "evidence", "reason", "notes", "norm", "amara_comments", "documents"] if f in labels}
     st.dataframe(styled, hide_index=True, height=520, width="stretch", row_height=38,
@@ -656,5 +671,5 @@ with st.container(key="dlbox"):
                        help=L("One sheet per chart on pages 1–4 with its table and an Excel chart, plus QA reconciliation sheets."))
 
 st.markdown(f"""<div class="footer"><span>{esc(L("Source: dss+ Safety, Legal Compliance & Culture Assessment for Amara NZero — site checklists, site-visit reports, cluster and global results presentations (June 2026). Confidential."))}</span>
-<span>{esc(L("Original") + " · " + NATIVE_LANG_NAME[region_lang()] if is_original() else "English")}</span></div>""",
+<span>{esc(NATIVE_LANG_NAME[lang_choice()])}</span></div>""",
             unsafe_allow_html=True)
